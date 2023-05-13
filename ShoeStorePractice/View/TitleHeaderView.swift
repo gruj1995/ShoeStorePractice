@@ -49,7 +49,7 @@ final class TitleHeaderView: UITableViewHeaderFooterView {
         let button = UIButton()
         var config = UIButton.Configuration.filled()
         config.contentInsets = .init(top: 3, leading: 10, bottom: 3, trailing: 10)
-        config.attributedTitle = AttributedString("See more", attributes: AttributeContainer([NSAttributedString.Key.font: UIFont.systemFont(ofSize: 10, weight: .semibold)]))
+        config.attributedTitle = AttributedString("See more", attributes: AttributeContainer([NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12, weight: .semibold)]))
         config.titleAlignment = .center
         config.baseBackgroundColor = .appColor(.darkGray2)
         config.baseForegroundColor = .appColor(.white) // 圖片及文字顏色
