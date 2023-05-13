@@ -19,6 +19,11 @@ class MainTabBarController: UITabBarController {
         setupUI()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        updateUnderlinePosition(animated: false)
+    }
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         adjustTabBarHeight()
@@ -30,7 +35,6 @@ class MainTabBarController: UITabBarController {
     private var appearance = UITabBarAppearance()
     private let imageWidth: CGFloat = 24
     private let underlineWidth: CGFloat = 16
-    private var imageVPadding: CGFloat = 0
 
     private lazy var underlineView: UIView = {
         let view = UIView()
@@ -41,7 +45,7 @@ class MainTabBarController: UITabBarController {
     private func setupUI() {
         setTabBarItems()
         setTabBarAppearance()
-        addTabBarUnderline()
+        tabBar.addSubview(underlineView)
     }
 
     private func setTabBarItems() {
@@ -73,8 +77,8 @@ class MainTabBarController: UITabBarController {
         tabBar.clipsToBounds = true
 
         // 用螢幕高度判斷型號，調整 icon 位置
-        imageVPadding = (Constants.screenHeight > 736) ? 15 : 8
-        let insets = UIEdgeInsets(top: imageVPadding, left: 0, bottom: -imageVPadding, right: 0)
+        let imageVerticalPadding: CGFloat = (Constants.screenHeight > 736) ? 15 : 8
+        let insets = UIEdgeInsets(top: imageVerticalPadding, left: 0, bottom: -imageVerticalPadding, right: 0)
         tabBar.items?.forEach { $0.imageInsets = insets }
 
         // 去除上方分隔線
@@ -95,7 +99,7 @@ class MainTabBarController: UITabBarController {
         itemAppearance.selected.iconColor = .appColor(.black)
     }
 
-    // 指定自訂的TabBar高度
+    /// 指定自訂的TabBar高度
     private func adjustTabBarHeight() {
         var tabBarFrame = tabBar.frame
         tabBarFrame.size.height = tabBarHeight
@@ -103,19 +107,18 @@ class MainTabBarController: UITabBarController {
         tabBar.frame = tabBarFrame
     }
 
-    private func addTabBarUnderline() {
-        tabBar.addSubview(underlineView)
-        updateUnderlinePosition(animated: false)
-    }
-
+    /// 更新底線位置
     private func updateUnderlinePosition(animated: Bool) {
         let tabBarWidth = tabBar.frame.size.width
         let itemWidth = tabBarWidth / CGFloat(tabBar.items?.count ?? 1)
         let x = itemWidth * CGFloat(selectedIndex) + (itemWidth - underlineWidth) / 2
-        // TODO: 26是觀察出的上方inset值，可能要替換成更準的
-        let y = 26 + imageWidth + 2
+        // 取得 tabBar item 圖片位置
+        guard let firstItemImageView = tabBar.subviews.compactMap({ $0 as? UIControl }).first?.subviews.first else {
+            return
+        }
+        let y = firstItemImageView.frame.minY + imageWidth + 2
         let newFrame = CGRect(x: x, y: y, width: underlineWidth, height: 1)
-
+        
         if animated {
             UIView.animate(withDuration: 0.3) {
                 self.underlineView.frame = newFrame
