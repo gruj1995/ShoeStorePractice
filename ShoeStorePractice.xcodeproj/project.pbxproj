@@ -10,12 +10,16 @@
 		8B3EF35F2A0F0F2C00A87D85 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3EF35E2A0F0F2C00A87D85 /* AppDelegate.swift */; };
 		8B3EF3612A0F0F2C00A87D85 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3EF3602A0F0F2C00A87D85 /* SceneDelegate.swift */; };
 		8B3EF3632A0F0F2C00A87D85 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3EF3622A0F0F2C00A87D85 /* ViewController.swift */; };
-		8B3EF3662A0F0F2C00A87D85 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8B3EF3642A0F0F2C00A87D85 /* Main.storyboard */; };
 		8B3EF3682A0F0F2D00A87D85 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8B3EF3672A0F0F2D00A87D85 /* Assets.xcassets */; };
 		8B3EF36B2A0F0F2D00A87D85 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8B3EF3692A0F0F2D00A87D85 /* LaunchScreen.storyboard */; };
 		8B3EF3762A0F0F2D00A87D85 /* ShoeStorePracticeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3EF3752A0F0F2D00A87D85 /* ShoeStorePracticeTests.swift */; };
 		8B3EF3802A0F0F2D00A87D85 /* ShoeStorePracticeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3EF37F2A0F0F2D00A87D85 /* ShoeStorePracticeUITests.swift */; };
 		8B3EF3822A0F0F2D00A87D85 /* ShoeStorePracticeUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3EF3812A0F0F2D00A87D85 /* ShoeStorePracticeUITestsLaunchTests.swift */; };
+		8B3EF38F2A0F1B9C00A87D85 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3EF38E2A0F1B9C00A87D85 /* MainTabBarController.swift */; };
+		8B3EF3922A0F1BD200A87D85 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8B3EF3912A0F1BD200A87D85 /* SnapKit */; };
+		8B3EF3952A0F1BF900A87D85 /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = 8B3EF3942A0F1BF900A87D85 /* SwiftyJSON */; };
+		8B3EF3982A0F1C1300A87D85 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 8B3EF3972A0F1C1300A87D85 /* Kingfisher */; };
+		8B3EF39B2A0F1C3800A87D85 /* FLEX in Frameworks */ = {isa = PBXBuildFile; productRef = 8B3EF39A2A0F1C3800A87D85 /* FLEX */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,7 +44,6 @@
 		8B3EF35E2A0F0F2C00A87D85 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8B3EF3602A0F0F2C00A87D85 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		8B3EF3622A0F0F2C00A87D85 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		8B3EF3652A0F0F2C00A87D85 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		8B3EF3672A0F0F2D00A87D85 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8B3EF36A2A0F0F2D00A87D85 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8B3EF36C2A0F0F2D00A87D85 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -49,6 +52,7 @@
 		8B3EF37B2A0F0F2D00A87D85 /* ShoeStorePracticeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ShoeStorePracticeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B3EF37F2A0F0F2D00A87D85 /* ShoeStorePracticeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoeStorePracticeUITests.swift; sourceTree = "<group>"; };
 		8B3EF3812A0F0F2D00A87D85 /* ShoeStorePracticeUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoeStorePracticeUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		8B3EF38E2A0F1B9C00A87D85 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +60,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B3EF3982A0F1C1300A87D85 /* Kingfisher in Frameworks */,
+				8B3EF3952A0F1BF900A87D85 /* SwiftyJSON in Frameworks */,
+				8B3EF3922A0F1BD200A87D85 /* SnapKit in Frameworks */,
+				8B3EF39B2A0F1C3800A87D85 /* FLEX in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -99,10 +107,10 @@
 		8B3EF35D2A0F0F2C00A87D85 /* ShoeStorePractice */ = {
 			isa = PBXGroup;
 			children = (
+				8B3EF38E2A0F1B9C00A87D85 /* MainTabBarController.swift */,
+				8B3EF3622A0F0F2C00A87D85 /* ViewController.swift */,
 				8B3EF35E2A0F0F2C00A87D85 /* AppDelegate.swift */,
 				8B3EF3602A0F0F2C00A87D85 /* SceneDelegate.swift */,
-				8B3EF3622A0F0F2C00A87D85 /* ViewController.swift */,
-				8B3EF3642A0F0F2C00A87D85 /* Main.storyboard */,
 				8B3EF3672A0F0F2D00A87D85 /* Assets.xcassets */,
 				8B3EF3692A0F0F2D00A87D85 /* LaunchScreen.storyboard */,
 				8B3EF36C2A0F0F2D00A87D85 /* Info.plist */,
@@ -143,6 +151,12 @@
 			dependencies = (
 			);
 			name = ShoeStorePractice;
+			packageProductDependencies = (
+				8B3EF3912A0F1BD200A87D85 /* SnapKit */,
+				8B3EF3942A0F1BF900A87D85 /* SwiftyJSON */,
+				8B3EF3972A0F1C1300A87D85 /* Kingfisher */,
+				8B3EF39A2A0F1C3800A87D85 /* FLEX */,
+			);
 			productName = ShoeStorePractice;
 			productReference = 8B3EF35B2A0F0F2C00A87D85 /* ShoeStorePractice.app */;
 			productType = "com.apple.product-type.application";
@@ -215,6 +229,12 @@
 				Base,
 			);
 			mainGroup = 8B3EF3522A0F0F2C00A87D85;
+			packageReferences = (
+				8B3EF3902A0F1BD200A87D85 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				8B3EF3932A0F1BF900A87D85 /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
+				8B3EF3962A0F1C1300A87D85 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				8B3EF3992A0F1C3800A87D85 /* XCRemoteSwiftPackageReference "FLEX" */,
+			);
 			productRefGroup = 8B3EF35C2A0F0F2C00A87D85 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -233,7 +253,6 @@
 			files = (
 				8B3EF36B2A0F0F2D00A87D85 /* LaunchScreen.storyboard in Resources */,
 				8B3EF3682A0F0F2D00A87D85 /* Assets.xcassets in Resources */,
-				8B3EF3662A0F0F2C00A87D85 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -260,6 +279,7 @@
 			files = (
 				8B3EF3632A0F0F2C00A87D85 /* ViewController.swift in Sources */,
 				8B3EF35F2A0F0F2C00A87D85 /* AppDelegate.swift in Sources */,
+				8B3EF38F2A0F1B9C00A87D85 /* MainTabBarController.swift in Sources */,
 				8B3EF3612A0F0F2C00A87D85 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -297,14 +317,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		8B3EF3642A0F0F2C00A87D85 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				8B3EF3652A0F0F2C00A87D85 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		8B3EF3692A0F0F2D00A87D85 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -602,6 +614,64 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		8B3EF3902A0F1BD200A87D85 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+		8B3EF3932A0F1BF900A87D85 /* XCRemoteSwiftPackageReference "SwiftyJSON" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SwiftyJSON/SwiftyJSON.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+		8B3EF3962A0F1C1300A87D85 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.0;
+			};
+		};
+		8B3EF3992A0F1C3800A87D85 /* XCRemoteSwiftPackageReference "FLEX" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/FLEXTool/FLEX.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		8B3EF3912A0F1BD200A87D85 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8B3EF3902A0F1BD200A87D85 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		8B3EF3942A0F1BF900A87D85 /* SwiftyJSON */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8B3EF3932A0F1BF900A87D85 /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
+			productName = SwiftyJSON;
+		};
+		8B3EF3972A0F1C1300A87D85 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8B3EF3962A0F1C1300A87D85 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+		8B3EF39A2A0F1C3800A87D85 /* FLEX */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8B3EF3992A0F1C3800A87D85 /* XCRemoteSwiftPackageReference "FLEX" */;
+			productName = FLEX;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 8B3EF3532A0F0F2C00A87D85 /* Project object */;
 }
