@@ -6,14 +6,29 @@
 //
 
 import UIKit
+#if DEBUG
+import FLEX
+#endif
+
+// MARK: - AppDelegate
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
-
+    func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
+#if DEBUG
+        FLEXManager.shared.isNetworkDebuggingEnabled = true
+#endif
+        return true
+    }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+
+        initializeGlobals()
+        setupAppearance()
+
+#if DEBUG
+        FLEXManager.shared.isNetworkDebuggingEnabled = true
+#endif
         return true
     }
 
@@ -25,12 +40,38 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
     }
 
-    func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
-        // Called when the user discards a scene session.
-        // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
-        // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
+    /// 設置螢幕支持的方向
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        return .portrait
+    }
+}
+
+extension AppDelegate {
+    /// 設置全域變數
+    private func initializeGlobals() {
+        // 修正ios 15 tableView section 上方多出的空白
+        UITableView.appearance().sectionHeaderTopPadding = 0.0
     }
 
+    /// 設置界面樣式，例如導航欄外觀、顏色等
+    private func setupAppearance() {
+        // 要先到 info.plist 新增 key(View controller-based status bar appearance) 以下設置才有效
+        UIApplication.shared.statusBarStyle = .lightContent
 
+        // 設置所有 UIBarButtonItem 的 tinitColor
+        UIBarButtonItem.appearance().tintColor = .appColor(.black)
+    }
+}
+
+extension UIWindow {
+#if DEBUG
+    /// 搖動出現debug套件
+    open override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
+        super.motionEnded(motion, with: event)
+        if motion == .motionShake {
+            FLEXManager.shared.showExplorer()
+        }
+    }
+#endif
 }
 
