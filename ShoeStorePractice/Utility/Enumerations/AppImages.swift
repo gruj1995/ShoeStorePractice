@@ -16,4 +16,6 @@ enum AppImages {
 
     static let shoesBig = UIImage(named: "shoesBig")
     static let shoesSmall = UIImage(named: "shoesSmall")
+
+    static let chevronLeft = UIImage(named: "chevronLeft")
 }

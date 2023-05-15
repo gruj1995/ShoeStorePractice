@@ -1,17 +1,17 @@
 //
-//  HomeViewController.swift
+//  BrandViewController.swift
 //  ShoeStorePractice
 //
-//  Created by 李品毅 on 2023/5/13.
+//  Created by 李品毅 on 2023/5/15.
 //
 
 import Combine
 import SnapKit
 import UIKit
 
-// MARK: - HomeViewController
+// MARK: - BrandViewController
 
-class HomeViewController: UIViewController {
+class BrandViewController: UIViewController {
     // MARK: Lifecycle
 
     init() {
@@ -26,19 +26,19 @@ class HomeViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel = HomePageViewModel(vc: self)
+        viewModel = BrandViewModel(vc: self)
         setupUI()
         bindViewModel()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.isNavigationBarHidden = true
+        navigationController?.isNavigationBarHidden = false
     }
 
     // MARK: Private
 
-    private var viewModel: HomePageViewModel!
+    private var viewModel: BrandViewModel!
     private var cancellables: Set<AnyCancellable> = .init()
 
     // 抓取資料時的旋轉讀條 (可以搜尋"egaf"，觀察在資料筆數小的情況下怎麼顯示)
@@ -67,8 +67,8 @@ class HomeViewController: UIViewController {
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(TitleHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: TitleHeaderView.reuseId)
-        collectionView.register(CategoryCell.self, forCellWithReuseIdentifier: CategoryCell.reuseId)
-        collectionView.register(BrandCell.self, forCellWithReuseIdentifier: BrandCell.reuseId)
+        collectionView.register(BrandInfoCell.self, forCellWithReuseIdentifier: BrandInfoCell.reuseId)
+        collectionView.register(ShoeCategoryCell.self, forCellWithReuseIdentifier: ShoeCategoryCell.reuseId)
         collectionView.register(PopularCell.self, forCellWithReuseIdentifier: PopularCell.reuseId)
         collectionView.register(LatestCell.self, forCellWithReuseIdentifier: LatestCell.reuseId)
         collectionView.delegate = self
@@ -94,9 +94,9 @@ class HomeViewController: UIViewController {
         case 0:
             return self.categorySection
         case 1:
-            return self.brandSection
+            return self.shoeCategoriesSection
         case 2:
-            return self.popularSection
+            return self.shoeCategorySection
         case 3:
             return self.latestSection
         default:
@@ -112,35 +112,31 @@ class HomeViewController: UIViewController {
     }
 
     private lazy var categorySection: NSCollectionLayoutSection = {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(148), heightDimension: .absolute(82))
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(0.47))
+        let contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 15, trailing: 0)
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: itemSize, subitems: [item])
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = contentInsets
+        section.orthogonalScrollingBehavior = .none // 橫向捲動
+//        section.boundarySupplementaryItems = [self.createSectionHeader()]
+        return section
+    }()
+
+    private lazy var shoeCategoriesSection: NSCollectionLayoutSection = {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(150), heightDimension: .absolute(45))
         let contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 15, bottom: 0, trailing: 15)
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: itemSize, subitems: [item])
         let section = NSCollectionLayoutSection(group: group)
-        section.interGroupSpacing = 14  // 設置水平間距
+        section.interGroupSpacing = 15  // 設置水平間距
         section.contentInsets = contentInsets
         section.orthogonalScrollingBehavior = .continuous // 橫向捲動
-        section.boundarySupplementaryItems = [self.createSectionHeader()]
+//        section.boundarySupplementaryItems = [self.createSectionHeader(headerHeight: 35)]
         return section
     }()
 
-    // 垂直排列，橫向最多兩個，縱向最多六個
-    private lazy var brandSection: NSCollectionLayoutSection = {
-        let contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 7.5, bottom: 0, trailing: 7.5)
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .absolute(50))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = contentInsets
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(100))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-        let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = contentInsets
-        section.interGroupSpacing = 14  // 設置垂直間距
-        let headerContentInsets = contentInsets
-        section.boundarySupplementaryItems = [self.createSectionHeader(insets: headerContentInsets)]
-        return section
-    }()
-
-    private lazy var popularSection: NSCollectionLayoutSection = {
+    private lazy var shoeCategorySection: NSCollectionLayoutSection = {
         let fraction: CGFloat = 0.85
         let contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 15, bottom: 0, trailing: 15)
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
@@ -183,7 +179,8 @@ class HomeViewController: UIViewController {
     private func setupLayout() {
         view.addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.top.equalTo(view.safeAreaLayoutGuide)
+            make.leading.trailing.bottom.equalToSuperview()
         }
 
         view.addSubview(emptyStateView)
@@ -243,16 +240,11 @@ class HomeViewController: UIViewController {
         viewModel.state = .success
         //        viewModel.reloadTracks()
     }
-
-    private func pushToBrandVC() {
-        let vc = BrandViewController()
-        navigationController?.pushViewController(vc, animated: true)
-    }
 }
 
 // MARK: UICollectionViewDelegate, UICollectionViewDataSource
 
-extension HomeViewController: CollectionViewData {
+extension BrandViewController: CollectionViewData {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return viewModel.datas.count
     }
@@ -266,7 +258,6 @@ extension HomeViewController: CollectionViewData {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-
         let section = viewModel.datas[indexPath.section]
         let item = section[indexPath.row]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: type(of: item).reuseId, for: indexPath)
@@ -275,24 +266,14 @@ extension HomeViewController: CollectionViewData {
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if indexPath.section == 1 {
-            pushToBrandVC()
-        }
+
     }
 
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TitleHeaderView.reuseId, for: indexPath) as! TitleHeaderView
 
         let sectionData = viewModel.sectionDatas[indexPath.section]
-//        var title = ""
-//        switch sectionData {
-//        case .category:
-//            title = "Choose a Category"
-//        case .brand: title = "Select a Brand"
-//        case .popular: title = "What’s Popular"
-//        case .latest: title = "Latest shoes"
-//        }
-        header.configure(title: sectionData.title, showSeeMoreButton: indexPath.section != 0)
+        header.configure(title: "ss", showSeeMoreButton: indexPath.section != 0)
         header.onSeeMoreButtonTapped = { [weak self] _ in
             print("__+++")
         }

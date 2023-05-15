@@ -35,6 +35,10 @@
 		8B3EF3CA2A113B5A00A87D85 /* TitleHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3EF3C92A113B5A00A87D85 /* TitleHeaderView.swift */; };
 		8B3EF3CC2A11478E00A87D85 /* PopularCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3EF3CB2A11478E00A87D85 /* PopularCell.swift */; };
 		8B3EF3CE2A11479C00A87D85 /* LatestCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3EF3CD2A11479C00A87D85 /* LatestCell.swift */; };
+		8B3EF3D02A11D52500A87D85 /* BrandViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3EF3CF2A11D52500A87D85 /* BrandViewController.swift */; };
+		8B3EF3D22A11D52F00A87D85 /* BrandViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3EF3D12A11D52F00A87D85 /* BrandViewModel.swift */; };
+		8B3EF3D42A11DBA900A87D85 /* ShoeCategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3EF3D32A11DBA800A87D85 /* ShoeCategoryCell.swift */; };
+		8B3EF3D62A11DF8600A87D85 /* BrandInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3EF3D52A11DF8600A87D85 /* BrandInfoCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,6 +87,10 @@
 		8B3EF3C92A113B5A00A87D85 /* TitleHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleHeaderView.swift; sourceTree = "<group>"; };
 		8B3EF3CB2A11478E00A87D85 /* PopularCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularCell.swift; sourceTree = "<group>"; };
 		8B3EF3CD2A11479C00A87D85 /* LatestCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatestCell.swift; sourceTree = "<group>"; };
+		8B3EF3CF2A11D52500A87D85 /* BrandViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandViewController.swift; sourceTree = "<group>"; };
+		8B3EF3D12A11D52F00A87D85 /* BrandViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandViewModel.swift; sourceTree = "<group>"; };
+		8B3EF3D32A11DBA800A87D85 /* ShoeCategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoeCategoryCell.swift; sourceTree = "<group>"; };
+		8B3EF3D52A11DF8600A87D85 /* BrandInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandInfoCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -183,6 +191,8 @@
 				8B3EF38E2A0F1B9C00A87D85 /* MainTabBarController.swift */,
 				8B3EF3622A0F0F2C00A87D85 /* HomeViewController.swift */,
 				8B3EF3A32A0F1F0700A87D85 /* HomePageViewModel.swift */,
+				8B3EF3CF2A11D52500A87D85 /* BrandViewController.swift */,
+				8B3EF3D12A11D52F00A87D85 /* BrandViewModel.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -240,6 +250,8 @@
 				8B3EF3BF2A0FF25800A87D85 /* BrandCell.swift */,
 				8B3EF3CB2A11478E00A87D85 /* PopularCell.swift */,
 				8B3EF3CD2A11479C00A87D85 /* LatestCell.swift */,
+				8B3EF3D52A11DF8600A87D85 /* BrandInfoCell.swift */,
+				8B3EF3D32A11DBA800A87D85 /* ShoeCategoryCell.swift */,
 			);
 			path = CollectionViewCell;
 			sourceTree = "<group>";
@@ -390,15 +402,19 @@
 				8B3EF3C02A0FF25800A87D85 /* BrandCell.swift in Sources */,
 				8B3EF3CE2A11479C00A87D85 /* LatestCell.swift in Sources */,
 				8B3EF3B82A0F84EA00A87D85 /* CategoryCell.swift in Sources */,
+				8B3EF3D42A11DBA900A87D85 /* ShoeCategoryCell.swift in Sources */,
+				8B3EF3D22A11D52F00A87D85 /* BrandViewModel.swift in Sources */,
 				8B3EF3632A0F0F2C00A87D85 /* HomeViewController.swift in Sources */,
 				8B3EF3BA2A0F858300A87D85 /* Utils.swift in Sources */,
 				8B3EF3CC2A11478E00A87D85 /* PopularCell.swift in Sources */,
 				8B3EF3B02A0F6F3600A87D85 /* ViewState.swift in Sources */,
 				8B3EF39D2A0F1E6F00A87D85 /* UIColor+Extensions.swift in Sources */,
 				8B3EF3A82A0F24D800A87D85 /* AppImages.swift in Sources */,
+				8B3EF3D02A11D52500A87D85 /* BrandViewController.swift in Sources */,
 				8B3EF3A42A0F1F0700A87D85 /* HomePageViewModel.swift in Sources */,
 				8B3EF35F2A0F0F2C00A87D85 /* AppDelegate.swift in Sources */,
 				8B3EF3CA2A113B5A00A87D85 /* TitleHeaderView.swift in Sources */,
+				8B3EF3D62A11DF8600A87D85 /* BrandInfoCell.swift in Sources */,
 				8B3EF3C42A10869600A87D85 /* CellConfigurator.swift in Sources */,
 				8B3EF38F2A0F1B9C00A87D85 /* MainTabBarController.swift in Sources */,
 				8B3EF3BE2A0F96F300A87D85 /* DynamicHeightFlowLayout.swift in Sources */,

@@ -25,6 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         initializeGlobals()
         setupAppearance()
+        setNavigationBarAppearance()
 
 #if DEBUG
         FLEXManager.shared.isNetworkDebuggingEnabled = true
@@ -60,6 +61,26 @@ extension AppDelegate {
 
         // 設置所有 UIBarButtonItem 的 tinitColor
         UIBarButtonItem.appearance().tintColor = .appColor(.black)
+    }
+
+    private func setNavigationBarAppearance() {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithTransparentBackground() // 透明背景且無陰影(隱藏底部邊框)
+        appearance.backgroundColor = .clear
+        appearance.titleTextAttributes = [
+            NSAttributedString.Key.foregroundColor: UIColor.appColor(.black),
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 20, weight: .bold)
+        ]
+
+        // 返回按鈕樣式
+        let backButtonAppearance = UIBarButtonItemAppearance(style: .plain)
+        backButtonAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.clear]
+        appearance.backButtonAppearance = backButtonAppearance
+        let backImg = AppImages.chevronLeft
+        appearance.setBackIndicatorImage(backImg, transitionMaskImage: backImg)
+
+        UINavigationBar.appearance().standardAppearance = appearance
+        UINavigationBar.appearance().scrollEdgeAppearance = appearance
     }
 }
 
