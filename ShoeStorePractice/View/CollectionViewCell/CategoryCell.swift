@@ -1,5 +1,5 @@
 //
-//  GradientBackgroundCell.swift
+//  CategoryCell.swift
 //  ShoeStorePractice
 //
 //  Created by 李品毅 on 2023/5/13.
@@ -8,7 +8,7 @@
 import SnapKit
 import UIKit
 
-class GradientBackgroundCell: UICollectionViewCell {
+class CategoryCell: UICollectionViewCell, ConfigurableCell {
     // MARK: Lifecycle
 
     override init(frame: CGRect) {
@@ -23,11 +23,11 @@ class GradientBackgroundCell: UICollectionViewCell {
 
     // MARK: Internal
 
-    class var reuseIdentifier: String {
+    class var reuseId: String {
         return String(describing: self)
     }
 
-    func configure() {
+    func configure(data name: String) {
 //        coverImageView.loadImage(
 //            with: playlist.imageUrl,
 //            placeholder: AppImages.catMushroom

@@ -2,37 +2,36 @@
 //  TitleHeaderView.swift
 //  ShoeStorePractice
 //
-//  Created by 李品毅 on 2023/5/13.
+//  Created by 李品毅 on 2023/5/14.
 //
 
 import SnapKit
 import UIKit
 
-// MARK: - TitleHeaderView
-
-final class TitleHeaderView: UITableViewHeaderFooterView {
+class TitleHeaderView: UICollectionReusableView {
     // MARK: Lifecycle
 
-    override init(reuseIdentifier: String?) {
-        super.init(reuseIdentifier: reuseIdentifier)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         setupUI()
     }
 
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        setupUI()
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     // MARK: Internal
 
-    class var reuseIdentifier: String {
+    class var reuseId: String {
         return String(describing: self)
     }
 
     var onSeeMoreButtonTapped: ((UIButton) -> Void)?
 
-    func configure(title: String) {
+    func configure(title: String, showSeeMoreButton: Bool) {
         titleLabel.text = title
+        seeMoreButton.isHidden = !showSeeMoreButton
     }
 
     // MARK: Private
@@ -63,22 +62,21 @@ final class TitleHeaderView: UITableViewHeaderFooterView {
     }()
 
     private func setupUI() {
-        contentView.backgroundColor = .appColor(.white)
+        backgroundColor = .clear
         setupLayout()
     }
 
     private func setupLayout() {
-        contentView.addSubview(titleLabel)
+        addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(20)
-            make.centerY.equalToSuperview()
+            make.leading.centerY.equalToSuperview()
         }
 
-        contentView.addSubview(seeMoreButton)
+        addSubview(seeMoreButton)
         seeMoreButton.snp.makeConstraints { make in
             make.leading.equalTo(titleLabel.snp.trailing).offset(5)
-            make.trailing.equalToSuperview().inset(20)
-            make.centerY.equalToSuperview()
+            make.trailing.centerY.equalToSuperview()
+
             make.height.equalTo(21)
         }
     }

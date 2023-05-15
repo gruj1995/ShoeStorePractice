@@ -13,4 +13,7 @@ enum AppImages {
     static let wallet = UIImage(named: "wallet")
     static let cart = UIImage(named: "cart")
     static let user = UIImage(named: "user")
+
+    static let shoesBig = UIImage(named: "shoesBig")
+    static let shoesSmall = UIImage(named: "shoesSmall")
 }

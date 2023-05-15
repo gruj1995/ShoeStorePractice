@@ -14,6 +14,7 @@ enum AssetsColor {
     case white
     case gray1
     case gray2
+    case gray3
     case darkGray1
     case darkGray2
     case green
@@ -27,6 +28,7 @@ extension UIColor {
         case .white: return UIColor(named: "white")
         case .gray1: return UIColor(named: "gray1")
         case .gray2: return UIColor(named: "gray2")
+        case .gray3: return UIColor(named: "gray3")
         case .darkGray1: return UIColor(named: "darkGray1")
         case .darkGray2: return UIColor(named: "darkGray2")
         case .green: return UIColor(named: "green")

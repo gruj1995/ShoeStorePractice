@@ -19,13 +19,14 @@ class HomeViewController: UIViewController {
     }
 
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
+        fatalError()
     }
 
     // MARK: Internal
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewModel = HomePageViewModel(vc: self)
         setupUI()
         bindViewModel()
     }
@@ -37,7 +38,7 @@ class HomeViewController: UIViewController {
 
     // MARK: Private
 
-    private let viewModel: HomePageViewModel = .init()
+    private var viewModel: HomePageViewModel!
     private var cancellables: Set<AnyCancellable> = .init()
 
     // 抓取資料時的旋轉讀條 (可以搜尋"egaf"，觀察在資料筆數小的情況下怎麼顯示)
@@ -61,24 +62,115 @@ class HomeViewController: UIViewController {
         return refreshControl
     }()
 
-    private lazy var tableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .grouped)
-        tableView.register(TitleHeaderView.self, forHeaderFooterViewReuseIdentifier: TitleHeaderView.reuseIdentifier)
-        tableView.register(CollectionViewContainerCell.self, forCellReuseIdentifier: CollectionViewContainerCell.reuseIdentifier)
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedSectionHeaderHeight = 0
-        tableView.estimatedSectionFooterHeight = 0
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.separatorStyle = .none
-        tableView.addSubview(refreshControl)
-        return tableView
+    // MARK: View
+
+    private lazy var collectionView: UICollectionView = {
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.register(TitleHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: TitleHeaderView.reuseId)
+        collectionView.register(CategoryCell.self, forCellWithReuseIdentifier: CategoryCell.reuseId)
+        collectionView.register(BrandCell.self, forCellWithReuseIdentifier: BrandCell.reuseId)
+        collectionView.register(PopularCell.self, forCellWithReuseIdentifier: PopularCell.reuseId)
+        collectionView.register(LatestCell.self, forCellWithReuseIdentifier: LatestCell.reuseId)
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.backgroundColor = .appColor(.white)
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.showsVerticalScrollIndicator = false
+        // 避免底部被tabBar遮到
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 30, right: 0)
+        return collectionView
     }()
 
     private lazy var emptyStateView: EmptyStateView = {
         let view = EmptyStateView()
         view.isHidden = true
         return view
+    }()
+
+    // MARK: CollectionLayout
+
+    private lazy var layout: UICollectionViewCompositionalLayout =  UICollectionViewCompositionalLayout { (sectionIndex, environment) -> NSCollectionLayoutSection? in
+        switch sectionIndex {
+        case 0:
+            return self.categorySection
+        case 1:
+            return self.brandSection
+        case 2:
+            return self.popularSection
+        case 3:
+            return self.latestSection
+        default:
+            return nil
+        }
+    }
+
+    private func createSectionHeader(insets: NSDirectionalEdgeInsets = .zero) -> NSCollectionLayoutBoundarySupplementaryItem {
+        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(60))
+        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+        header.contentInsets = insets
+        return header
+    }
+
+    private lazy var categorySection: NSCollectionLayoutSection = {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(148), heightDimension: .absolute(82))
+        let contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 15, bottom: 0, trailing: 15)
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: itemSize, subitems: [item])
+        let section = NSCollectionLayoutSection(group: group)
+        section.interGroupSpacing = 14  // 設置水平間距
+        section.contentInsets = contentInsets
+        section.orthogonalScrollingBehavior = .continuous // 橫向捲動
+        section.boundarySupplementaryItems = [self.createSectionHeader()]
+        return section
+    }()
+
+    // 垂直排列，橫向最多兩個，縱向最多六個
+    private lazy var brandSection: NSCollectionLayoutSection = {
+        let contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 7.5, bottom: 0, trailing: 7.5)
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .absolute(50))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        item.contentInsets = contentInsets
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(100))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = contentInsets
+        section.interGroupSpacing = 14  // 設置垂直間距
+        let headerContentInsets = contentInsets
+        section.boundarySupplementaryItems = [self.createSectionHeader(insets: headerContentInsets)]
+        return section
+    }()
+
+    private lazy var popularSection: NSCollectionLayoutSection = {
+        let fraction: CGFloat = 0.85
+        let contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 15, bottom: 0, trailing: 15)
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(fraction), heightDimension: .absolute(150))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = contentInsets
+        section.orthogonalScrollingBehavior = .paging // 橫向捲動
+        section.boundarySupplementaryItems = [self.createSectionHeader()]
+        return section
+    }()
+
+    private lazy var latestSection: NSCollectionLayoutSection = {
+        let fraction: CGFloat = 0.5
+        let padding: CGFloat = 15 // group 與外部間隔
+        let spacing: CGFloat = 11 // cell 間隔
+        let contentInsets = NSDirectionalEdgeInsets(top: 0, leading: padding, bottom: (padding + spacing / 2), trailing: padding)
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(fraction), heightDimension: .fractionalHeight(1))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(fraction))
+        // 每個group包含2個item
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 2) //
+        group.interItemSpacing = .fixed(spacing)
+        group.contentInsets = contentInsets
+        let section = NSCollectionLayoutSection(group: group)
+        section.orthogonalScrollingBehavior = .groupPaging // 橫向捲動
+        let headerContentInsets = NSDirectionalEdgeInsets(top: 0, leading: padding, bottom: 0, trailing: padding)
+        section.boundarySupplementaryItems = [self.createSectionHeader(insets: headerContentInsets)]
+        return section
     }()
 
     // MARK: Setup
@@ -89,8 +181,8 @@ class HomeViewController: UIViewController {
     }
 
     private func setupLayout() {
-        view.addSubview(tableView)
-        tableView.snp.makeConstraints { make in
+        view.addSubview(collectionView)
+        collectionView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
 
@@ -103,14 +195,6 @@ class HomeViewController: UIViewController {
     }
 
     private func bindViewModel() {
-//        viewModel.currentTrackIndexPublisher
-//            .receive(on: RunLoop.main)
-//            .removeDuplicates()
-//            .combineLatest(viewModel.isPlayingPublisher)
-//            .sink { [weak self] _ in
-//                self?.updateUI()
-//            }.store(in: &cancellables)
-
         viewModel.$state
             .receive(on: RunLoop.main)
             .sink { [weak self] state in
@@ -133,127 +217,55 @@ class HomeViewController: UIViewController {
         if viewModel.totalCount == 0, !viewModel.searchTerm.isEmpty {
             showNoResultView()
         } else {
-            // 要放在 tableView.reloadData() 前
-            tableView.tableFooterView = nil
-            tableView.reloadData()
+            collectionView.reloadData()
             showTableView()
         }
     }
 
     private func showTableView() {
         emptyStateView.isHidden = true
-        tableView.isHidden = false
+        collectionView.isHidden = false
     }
 
     private func showNoResultView() {
         emptyStateView.configure(title: "沒有結果", message: "嘗試新的搜尋項目。")
         emptyStateView.isHidden = false
-        tableView.isHidden = true
+        collectionView.isHidden = true
     }
 
     private func handleError(_ error: Error) {
         refreshControl.endRefreshing()
-        tableView.tableFooterView = nil
         showNoResultView()
     }
 
     @objc
     private func reloadTracks() {
         viewModel.state = .success
-//        viewModel.reloadTracks()
-    }
-
-//    private lazy var collectionView: UICollectionView = {
-//        let layout = UICollectionViewFlowLayout()
-//        layout.scrollDirection = .horizontal
-//        layout.minimumLineSpacing = 0
-//        layout.minimumInteritemSpacing = 14
-//
-//        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-//        collectionView.register(GradientBackgroundCell.self, forCellWithReuseIdentifier: GradientBackgroundCell.reuseIdentifier)
-//        collectionView.dataSource = self
-//        collectionView.delegate = self
-//        collectionView.backgroundColor = .appColor(.white)
-//        return collectionView
-//    }()
-}
-
-// MARK: UITableViewDataSource, UITableViewDelegate
-
-extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 4
-    }
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: CollectionViewContainerCell.reuseIdentifier) as? CollectionViewContainerCell
-        else {
-            return UITableViewCell()
-        }
-
-        cell.configure(self)
-//        guard let track = viewModel.track(forCellAt: indexPath.row) else {
-//            return cell
-//        }
-        return cell
-    }
-
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // 解除cell被選中的狀態
-        tableView.deselectRow(at: indexPath, animated: true)
-    }
-
-//    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-//        let lastRowIndex = tableView.numberOfRows(inSection: 0) - 1
-//        viewModel.loadMoreIfNeeded(currentRowIndex: indexPath.row, lastRowIndex: lastRowIndex)
-//    }
-
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 60
-    }
-
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: TitleHeaderView.reuseIdentifier) as? TitleHeaderView else {
-            return nil
-        }
-        let title = "播放記錄"
-        header.configure(title: title)
-        header.onSeeMoreButtonTapped = { [weak self] _ in
-            print("__+++")
-        }
-        return header
-    }
-
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return CGFloat.leastNormalMagnitude
-    }
-
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let view = UIView()
-        view.backgroundColor = .appColor(.white)
-        return view
+        //        viewModel.reloadTracks()
     }
 }
 
 // MARK: UICollectionViewDelegate, UICollectionViewDataSource
 
 extension HomeViewController: CollectionViewData {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return viewModel.datas.count
+    }
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        let sectionData = viewModel.datas[section]
+        if section == 1 {
+            return min(6, sectionData.count)
+        }
+        return sectionData.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GradientBackgroundCell.reuseIdentifier, for: indexPath) as? GradientBackgroundCell else {
-            return UICollectionViewCell()
-        }
-//        guard let playlist = viewModel.item(forCellAt: indexPath.item) else {
-//            return cell
-//        }
-        cell.configure()
+
+        let section = viewModel.datas[indexPath.section]
+        let item = section[indexPath.row]
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: type(of: item).reuseId, for: indexPath)
+        item.configure(cell: cell)
         return cell
     }
 
@@ -261,10 +273,23 @@ extension HomeViewController: CollectionViewData {
 
     }
 
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-////        let width = floor((collectionView.bounds.width - cellSpacing * (columnCount - 1) - (sectionPadding * 2)) / columnCount)
-////        let height = width + 50
-////        return CGSize(width: width, height: height)
-//        return CGSize(width: 148, height: collectionView.frame.height)
-//    }
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TitleHeaderView.reuseId, for: indexPath) as! TitleHeaderView
+
+        let sectionData = viewModel.sectionDatas[indexPath.section]
+        var title = ""
+        switch sectionData {
+        case .category:
+            title = "Choose a Category"
+        case .brand: title = "Select a Brand"
+        case .popular: title = "What’s Popular"
+        case .latest: title = "Latest shoes"
+        }
+//        let title = "播放記錄"
+        header.configure(title: title, showSeeMoreButton: indexPath.section != 0)
+        header.onSeeMoreButtonTapped = { [weak self] _ in
+            print("__+++")
+        }
+        return header
+    }
 }
