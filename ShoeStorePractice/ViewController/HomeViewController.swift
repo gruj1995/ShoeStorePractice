@@ -130,7 +130,7 @@ class HomeViewController: UIViewController {
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = contentInsets
-        section.interGroupSpacing = 21 // 設置垂直間距
+        section.interGroupSpacing = 21 
         section.orthogonalScrollingBehavior = .continuous // 橫向捲動
         section.boundarySupplementaryItems = [self.createSectionHeader()]
         return section
@@ -260,13 +260,16 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
-
         guard let sectionType = viewModel.sectionType(indexPath.section) else {
             return
         }
-        if sectionType == .brand{
+        switch sectionType {
+        case .category, .popular:
+            collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+        case .brand:
             pushToBrandVC()
+        default:
+            return
         }
     }
 

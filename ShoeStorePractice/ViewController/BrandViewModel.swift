@@ -55,13 +55,15 @@ class BrandViewModel {
         datas.removeAll()
         let group = DispatchGroup()
 
+        brand = [BrandInfoCellConfig(item: "w")]
+
         group.enter()
-        fetchMockShoeCategories { _ in
+        fetchMockShoeCategories() { result in
             group.leave()
         }
 
 //        group.enter()
-//        fetchMockShoeCategories() { result in
+//        fetchShoeCategoryItems() { result in
 //            group.leave()
 //        }
 //
@@ -81,7 +83,6 @@ class BrandViewModel {
         }
 
         group.notify(queue: .main) {
-            self.brand = [BrandInfoCellConfig(item: "w")]
             self.setData()
             self.state = .success
         }
@@ -91,6 +92,13 @@ class BrandViewModel {
         let section = datas[indexPath.section]
         let item = section[indexPath.row]
         return item
+    }
+
+    func sectionType(_ section: Int) -> SectionType? {
+        guard sectionTypes.indices.contains(section) else {
+            return nil
+        }
+        return sectionTypes[section]
     }
 
     func sectionTitle(_ section: Int) -> String {
