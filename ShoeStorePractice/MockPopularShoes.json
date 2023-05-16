@@ -1,0 +1,236 @@
+{
+  "search_results" : [
+    {
+      "rating" : 4.5999999999999996,
+      "categories" : [
+        {
+          "name" : "All Departments",
+          "id" : "aps"
+        }
+      ],
+      "ratings_total" : 42493,
+      "position" : 1,
+      "is_prime" : true,
+      "link" : "https://www.amazon.com/Under-Armour-Charged-Assert-Black/dp/B087T7D7KS/ref=sr_1_1?keywords=shoes&qid=1684166739&sr=8-1",
+      "brand" : "Under Armour",
+      "position_overall" : 1,
+      "title" : "Under Armour Men's Charged Assert 9 Running Shoe",
+      "price" : {
+        "raw" : "$49.95",
+        "value" : 49.950000000000003,
+        "symbol" : "$",
+        "currency" : "USD",
+        "name" : "$49.95",
+        "is_primary" : true
+      },
+      "image" : "https://m.media-amazon.com/images/I/414egjgn-uL._AC_UL400_.jpg",
+      "prices" : [
+        {
+          "raw" : "$49.95",
+          "value" : 49.950000000000003,
+          "symbol" : "$",
+          "currency" : "USD",
+          "name" : "$49.95",
+          "is_primary" : true
+        },
+        {
+          "raw" : "$70.00",
+          "value" : 70,
+          "symbol" : "$",
+          "currency" : "USD",
+          "name" : "$49.95",
+          "is_rrp" : true
+        }
+      ],
+      "asin" : "B087T7D7KS",
+      "bestseller" : {
+        "link" : "https://www.amazon.com/gp/bestsellers/fashion/14210389011/ref=sr_bs_0_14210389011_1",
+        "category" : "Men's Road Running Shoes"
+      },
+      "page" : "1"
+    },
+    {
+      "rating" : 4.7000000000000002,
+      "categories" : [
+        {
+          "name" : "All Departments",
+          "id" : "aps"
+        }
+      ],
+      "ratings_total" : 13871,
+      "position" : 2,
+      "is_prime" : true,
+      "link" : "https://www.amazon.com/Skechers-Relaxed-Fit-Creston-Moseco-Moccasin-Charcoal/dp/B07568JSPJ/ref=sr_1_2?keywords=shoes&qid=1684166739&sr=8-2",
+      "brand" : "Skechers",
+      "position_overall" : 2,
+      "title" : "Skechers Men's Relaxed Fit-Creston-Moseco",
+      "price" : {
+        "raw" : "$45.34",
+        "value" : 45.340000000000003,
+        "symbol" : "$",
+        "currency" : "USD",
+        "name" : "$45.34",
+        "is_primary" : true
+      },
+      "image" : "https://m.media-amazon.com/images/I/81OYwoZnMRL._AC_UL400_.jpg",
+      "prices" : [
+        {
+          "raw" : "$45.34",
+          "value" : 45.340000000000003,
+          "symbol" : "$",
+          "currency" : "USD",
+          "name" : "$45.34",
+          "is_primary" : true
+        },
+        {
+          "raw" : "$65.00",
+          "value" : 65,
+          "symbol" : "$",
+          "currency" : "USD",
+          "name" : "$45.34",
+          "is_rrp" : true
+        }
+      ],
+      "asin" : "B07568JSPJ",
+      "page" : "1"
+    },
+    {
+      "rating" : 4.5,
+      "categories" : [
+        {
+          "name" : "All Departments",
+          "id" : "aps"
+        }
+      ],
+      "ratings_total" : 7906,
+      "position" : 3,
+      "link" : "https://www.amazon.com/adidas-Mens-Kaptir-Black-Carbon/dp/B08CYF5CDS/ref=sr_1_3?keywords=shoes&qid=1684166739&sr=8-3",
+      "brand" : "adidas",
+      "position_overall" : 3,
+      "title" : "adidas Men's Kaptir 2.0 Running Shoe",
+      "price" : {
+        "raw" : "$62.36",
+        "value" : 62.359999999999999,
+        "symbol" : "$",
+        "currency" : "USD",
+        "name" : "$62.36",
+        "is_primary" : true
+      },
+      "image" : "https://m.media-amazon.com/images/I/71WSzVZ+M9L._AC_UL400_.jpg",
+      "prices" : [
+        {
+          "raw" : "$62.36",
+          "value" : 62.359999999999999,
+          "symbol" : "$",
+          "currency" : "USD",
+          "name" : "$62.36",
+          "is_primary" : true
+        },
+        {
+          "raw" : "$90.00",
+          "value" : 90,
+          "symbol" : "$",
+          "currency" : "USD",
+          "name" : "$62.36",
+          "is_rrp" : true
+        }
+      ],
+      "asin" : "B08CYF5CDS",
+      "page" : "1"
+    },
+    {
+      "rating" : 4.5,
+      "categories" : [
+        {
+          "name" : "All Departments",
+          "id" : "aps"
+        }
+      ],
+      "ratings_total" : 41535,
+      "position" : 4,
+      "is_prime" : true,
+      "link" : "https://www.amazon.com/Skechers-Performance-Mens-Sneaker-charcoal/dp/B071VN27K8/ref=sr_1_4?keywords=shoes&qid=1684166739&sr=8-4",
+      "brand" : "Skechers",
+      "position_overall" : 4,
+      "title" : "Skechers Men's Go Max-Athletic Air Mesh Slip on Walking Shoe Sneaker",
+      "price" : {
+        "raw" : "$39.99",
+        "value" : 39.990000000000002,
+        "symbol" : "$",
+        "currency" : "USD",
+        "name" : "$39.99",
+        "is_primary" : true
+      },
+      "image" : "https://m.media-amazon.com/images/I/81-AYXbCq4L._AC_UL400_.jpg",
+      "prices" : [
+        {
+          "raw" : "$39.99",
+          "value" : 39.990000000000002,
+          "symbol" : "$",
+          "currency" : "USD",
+          "name" : "$39.99",
+          "is_primary" : true
+        },
+        {
+          "raw" : "$60.00",
+          "value" : 60,
+          "symbol" : "$",
+          "currency" : "USD",
+          "name" : "$39.99",
+          "is_rrp" : true
+        }
+      ],
+      "asin" : "B071VN27K8",
+      "bestseller" : {
+        "link" : "https://www.amazon.com/gp/bestsellers/fashion/679303011/ref=sr_bs_3_679303011_1",
+        "category" : "Men's Walking Shoes"
+      },
+      "page" : "1"
+    },
+    {
+      "rating" : 4.5999999999999996,
+      "categories" : [
+        {
+          "name" : "All Departments",
+          "id" : "aps"
+        }
+      ],
+      "ratings_total" : 4213,
+      "position" : 5,
+      "link" : "https://www.amazon.com/adidas-Originals-Smith-Sneaker-White/dp/B087D7SGMK/ref=sr_1_5?keywords=shoes&qid=1684166739&sr=8-5",
+      "brand" : "adidas Originals",
+      "position_overall" : 5,
+      "title" : "adidas Originals Men's Stan Smith (End Plastic Waste) Sneaker",
+      "price" : {
+        "raw" : "$69.79",
+        "value" : 69.790000000000006,
+        "symbol" : "$",
+        "currency" : "USD",
+        "name" : "$69.79",
+        "is_primary" : true
+      },
+      "image" : "https://m.media-amazon.com/images/I/61sZZo0-pZL._AC_UL400_.jpg",
+      "prices" : [
+        {
+          "raw" : "$69.79",
+          "value" : 69.790000000000006,
+          "symbol" : "$",
+          "currency" : "USD",
+          "name" : "$69.79",
+          "is_primary" : true
+        },
+        {
+          "raw" : "$100.00",
+          "value" : 100,
+          "symbol" : "$",
+          "currency" : "USD",
+          "name" : "$69.79",
+          "is_rrp" : true
+        }
+      ],
+      "asin" : "B087D7SGMK",
+      "page" : "1"
+    }
+  ]
+}
+
