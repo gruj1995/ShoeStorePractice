@@ -21,7 +21,6 @@ class HomeViewModel {
     // MARK: Lifecycle
 
     init() {
-        brandConfigs = Brand.allCases.map { BrandCellConfig(item: $0) }
         fetchData()
     }
 
@@ -76,24 +75,28 @@ class HomeViewModel {
             group.leave()
         }
 
-//        group.enter()
-//        fetchBestSellers() { result in
-//            group.leave()
-//        }
-//
-//        group.enter()
-//        fetchNewestArrivals() { result in
-//            group.leave()
-//        }
+        brandConfigs = Brand.allCases.map { BrandCellConfig(item: $0) }
 
-        group.enter()
-        fetchMockBestSellers { _ in
-            group.leave()
-        }
+        if Constants.isDebug {
+            group.enter()
+            fetchMockBestSellers { _ in
+                group.leave()
+            }
 
-        group.enter()
-        fetchMockNewestArrivals { _ in
-            group.leave()
+            group.enter()
+            fetchMockNewestArrivals { _ in
+                group.leave()
+            }
+        } else {
+            group.enter()
+            fetchBestSellers() { result in
+                group.leave()
+            }
+
+            group.enter()
+            fetchNewestArrivals() { result in
+                group.leave()
+            }
         }
 
         group.notify(queue: .main) {

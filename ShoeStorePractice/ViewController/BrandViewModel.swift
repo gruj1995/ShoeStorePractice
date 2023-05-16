@@ -64,25 +64,27 @@ class BrandViewModel {
             group.leave()
         }
 
-        group.enter()
-        fetchShoeCategoryItems() { result in
-            group.leave()
-        }
+        if Constants.isDebug {
+            group.enter()
+            fetchMockShoeCategoryItems { _ in
+                group.leave()
+            }
 
-        group.enter()
-        fetchNewestArrivals() { result in
-            group.leave()
-        }
+            group.enter()
+            fetchMockNewestArrivals { _ in
+                group.leave()
+            }
+        } else {
+            group.enter()
+            fetchShoeCategoryItems() { result in
+                group.leave()
+            }
 
-//        group.enter()
-//        fetchMockShoeCategoryItems { _ in
-//            group.leave()
-//        }
-//
-//        group.enter()
-//        fetchMockNewestArrivals { _ in
-//            group.leave()
-//        }
+            group.enter()
+            fetchNewestArrivals() { result in
+                group.leave()
+            }
+        }
 
         group.notify(queue: .main) {
             self.setData()
