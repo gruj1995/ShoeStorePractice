@@ -7,46 +7,36 @@
 
 import UIKit
 
+// MARK: - ConfigurableCell
+
 protocol ConfigurableCell {
     associatedtype DataType
     func configure(data: DataType)
 }
+
+// MARK: - CellConfigurator
 
 protocol CellConfigurator {
     static var reuseId: String { get }
     func configure(cell: UIView)
 }
 
-class TableCellConfigurator<CellType: ConfigurableCell, DataType>: CellConfigurator where CellType.DataType == DataType, CellType: UITableViewCell {
-
-    static var reuseId: String { return String(describing: CellType.self) }
-
-    let item: DataType
-
-    init(item: DataType) {
-        self.item = item
-    }
-
-    func configure(cell: UIView) {
-        (cell as! CellType).configure(data: item)
-    }
-}
+// MARK: - CollectionCellConfigurator
 
 class CollectionCellConfigurator<CellType: ConfigurableCell, DataType>: CellConfigurator where CellType.DataType == DataType, CellType: UICollectionViewCell {
-
-    static var reuseId: String { return String(describing: CellType.self) }
-
-    let item: DataType
+    // MARK: Lifecycle
 
     init(item: DataType) {
         self.item = item
     }
 
+    // MARK: Internal
+
+    static var reuseId: String { return String(describing: CellType.self) }
+
+    let item: DataType
+
     func configure(cell: UIView) {
         (cell as! CellType).configure(data: item)
     }
 }
-
-// MARK: - CollectionViewData
-
-protocol CollectionViewData: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {}

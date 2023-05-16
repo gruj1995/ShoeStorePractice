@@ -76,7 +76,6 @@ class TitleHeaderView: UICollectionReusableView {
         seeMoreButton.snp.makeConstraints { make in
             make.leading.equalTo(titleLabel.snp.trailing).offset(5)
             make.trailing.centerY.equalToSuperview()
-
             make.height.equalTo(21)
         }
     }

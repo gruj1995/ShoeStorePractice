@@ -27,13 +27,13 @@ class CategoryCell: UICollectionViewCell, ConfigurableCell {
         return String(describing: self)
     }
 
-    func configure(data name: String) {
-//        coverImageView.loadImage(
-//            with: playlist.imageUrl,
-//            placeholder: AppImages.catMushroom
+    func configure(data model: Category) {
+//        categoryImageView.loadImage(
+//            with: category.imageUrl,
+//            placeholder: UIImage(named: "women")
 //        )
         categoryImageView.image = UIImage(named: "women")
-        titleLabel.text = "Women"
+        titleLabel.text = model.data?.name ?? ""
     }
 
     // MARK: Private
@@ -49,7 +49,8 @@ class CategoryCell: UICollectionViewCell, ConfigurableCell {
 
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.textAlignment = .left
+        label.textAlignment = .center
+        label.lineBreakMode = .byWordWrapping
         label.font = .systemFont(ofSize: 15, weight: .medium)
         label.textColor = .appColor(.black)
         label.numberOfLines = 0
@@ -67,14 +68,16 @@ class CategoryCell: UICollectionViewCell, ConfigurableCell {
     private func setupLayout() {
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(16)
+            make.top.bottom.leading.equalToSuperview().inset(10)
+            make.width.equalToSuperview().multipliedBy(0.5)
             make.centerY.equalToSuperview()
         }
 
         addSubview(categoryImageView)
         categoryImageView.snp.makeConstraints { make in
             make.leading.equalTo(titleLabel.snp.trailing).offset(5)
-            make.width.equalToSuperview().multipliedBy(0.4)
+            make.trailing.equalToSuperview().inset(10)
+            make.height.equalToSuperview()
             make.centerY.equalToSuperview()
         }
     }

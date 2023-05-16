@@ -27,8 +27,8 @@ class BrandCell: UICollectionViewCell, ConfigurableCell {
         return String(describing: self)
     }
 
-    func configure(data brand: Brand) {
-        categoryImageView.image = UIImage(named: brand.rawValue)
+    func configure(data model: Brand) {
+        categoryImageView.image = UIImage(named: model.rawValue)
     }
 
     // MARK: Private

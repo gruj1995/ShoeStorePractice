@@ -8,6 +8,8 @@
 import SnapKit
 import UIKit
 
+// MARK: - LatestCell
+
 class LatestCell: UICollectionViewCell, ConfigurableCell {
     // MARK: Lifecycle
 
@@ -27,12 +29,28 @@ class LatestCell: UICollectionViewCell, ConfigurableCell {
         return String(describing: self)
     }
 
-    func configure(data brand: String) {
-//        categoryImageView.image = UIImage(named: brand)
-        categoryImageView.image = AppImages.shoesSmall
+    func configure(data model: LatestShoeInfo) {
+        categoryImageView.loadImage(
+            with: model.imageUrl,
+            placeholder: AppImages.shoesSmall
+        )
+        isLike = model.isLike
+    }
+
+    func updateLikeButton(isLike: Bool) {
+        let image = isLike ? AppImages.heartFill : AppImages.heartEmpty
+        let color: UIColor? = isLike ? .orange: .appColor(.gray2)
+        likeButton.setImage(image, for: .normal)
+        likeButton.tintColor = color
     }
 
     // MARK: Private
+
+    private var isLike: Bool = false {
+        didSet {
+            updateLikeButton(isLike: isLike)
+        }
+    }
 
     private lazy var categoryImageView: UIImageView = {
         let imageView = UIImageView()
@@ -41,18 +59,37 @@ class LatestCell: UICollectionViewCell, ConfigurableCell {
         return imageView
     }()
 
+    private lazy var likeButton: UIButton = {
+        let button = UIButton()
+        button.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
+        return button
+    }()
+
     private func setupUI() {
         backgroundColor = .appColor(.gray3)
         clipsToBounds = true
         layer.cornerRadius = 10
+        updateLikeButton(isLike: false)
         setupLayout()
     }
 
     private func setupLayout() {
+        contentView.addSubview(likeButton)
+        likeButton.snp.makeConstraints { make in
+            make.width.height.equalTo(20)
+            make.top.equalToSuperview().inset(11)
+            make.trailing.equalToSuperview().inset(15)
+        }
+
         contentView.addSubview(categoryImageView)
         categoryImageView.snp.makeConstraints { make in
-//            make.edges.equalToSuperview()
-            make.center.equalToSuperview()
+            make.top.equalTo(likeButton.snp.bottom).offset(5)
+            make.leading.trailing.bottom.equalToSuperview().inset(14)
         }
+    }
+
+    @objc
+    private func likeButtonTapped(_ sender: UIButton) {
+        isLike.toggle()
     }
 }

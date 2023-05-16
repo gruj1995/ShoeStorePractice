@@ -27,11 +27,15 @@ class PopularCell: UICollectionViewCell, ConfigurableCell {
         return String(describing: self)
     }
 
-    func configure(data brand: String) {
-        categoryImageView.image = AppImages.shoesBig
-        nameLabel.text = "Adidas"
-        descriptionLabel.text = "test"
-        amountLabel.text = "$ 128.99"
+    func configure(data model: ShoeInfo) {
+//        categoryImageView.image = AppImages.shoesBig
+        categoryImageView.loadImage(
+            with: model.imageUrl,
+            placeholder: AppImages.shoesBig
+        )
+        nameLabel.text = model.brand
+        descriptionLabel.text = model.description
+        amountLabel.text = model.amountString
     }
 
     // MARK: Private
@@ -46,7 +50,7 @@ class PopularCell: UICollectionViewCell, ConfigurableCell {
 
     private lazy var categoryImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
+        imageView.contentMode = .scaleAspectFit
         imageView.backgroundColor = .clear
         return imageView
     }()
@@ -92,22 +96,23 @@ class PopularCell: UICollectionViewCell, ConfigurableCell {
     private func setupLayout() {
         addSubview(bgView)
         bgView.snp.makeConstraints { make in
-            make.top.bottom.equalToSuperview().inset(10)
-            make.leading.equalToSuperview()
-            make.trailing.equalToSuperview().inset(20)
+            make.edges.equalToSuperview()
+//            make.top.bottom.equalToSuperview().inset(10)
+//            make.leading.equalToSuperview()
+//            make.trailing.equalToSuperview().inset(20)
         }
 
         bgView.addSubview(infoStackView)
         infoStackView.snp.makeConstraints { make in
             make.leading.top.bottom.equalToSuperview().inset(25)
-            make.width.equalToSuperview().multipliedBy(0.3)
+            make.width.equalToSuperview().multipliedBy(0.33)
             make.centerY.equalToSuperview()
         }
 
-        addSubview(categoryImageView)
+        bgView.addSubview(categoryImageView)
         categoryImageView.snp.makeConstraints { make in
-            make.leading.equalTo(infoStackView.snp.trailing).offset(5)
-            make.trailing.top.bottom.equalToSuperview()
+            make.leading.equalTo(infoStackView.snp.trailing)
+            make.trailing.top.bottom.equalToSuperview().inset(5)
         }
     }
 }

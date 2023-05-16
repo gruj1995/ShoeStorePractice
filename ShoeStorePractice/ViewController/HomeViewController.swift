@@ -18,6 +18,7 @@ class HomeViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
 
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError()
     }
@@ -26,7 +27,7 @@ class HomeViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel = HomePageViewModel(vc: self)
+        viewModel = HomeViewModel()
         setupUI()
         bindViewModel()
     }
@@ -38,29 +39,8 @@ class HomeViewController: UIViewController {
 
     // MARK: Private
 
-    private var viewModel: HomePageViewModel!
+    private var viewModel: HomeViewModel!
     private var cancellables: Set<AnyCancellable> = .init()
-
-    // 抓取資料時的旋轉讀條 (可以搜尋"egaf"，觀察在資料筆數小的情況下怎麼顯示)
-    private lazy var activityIndicator: UIActivityIndicatorView = {
-        let activityIndicator = UIActivityIndicatorView(style: .medium)
-        activityIndicator.startAnimating()
-        return activityIndicator
-    }()
-
-    // 下拉 tableView 更新資料
-    private lazy var refreshControl: UIRefreshControl = {
-        let refreshControl = UIRefreshControl()
-        refreshControl.tintColor = .lightGray
-        let attributedString = NSAttributedString(string: "更新資料", attributes: [
-            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14),
-            NSAttributedString.Key.foregroundColor: UIColor.lightGray
-        ])
-        refreshControl.attributedTitle = attributedString
-        refreshControl.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
-        refreshControl.addTarget(self, action: #selector(reloadTracks), for: .valueChanged)
-        return refreshControl
-    }()
 
     // MARK: View
 
@@ -81,6 +61,13 @@ class HomeViewController: UIViewController {
         return collectionView
     }()
 
+    private lazy var activityIndicator: UIActivityIndicatorView = {
+        let activityIndicator = UIActivityIndicatorView(style: .medium)
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.startAnimating()
+        return activityIndicator
+    }()
+
     private lazy var emptyStateView: EmptyStateView = {
         let view = EmptyStateView()
         view.isHidden = true
@@ -89,7 +76,7 @@ class HomeViewController: UIViewController {
 
     // MARK: CollectionLayout
 
-    private lazy var layout: UICollectionViewCompositionalLayout =  UICollectionViewCompositionalLayout { (sectionIndex, environment) -> NSCollectionLayoutSection? in
+    private lazy var layout: UICollectionViewCompositionalLayout = UICollectionViewCompositionalLayout { sectionIndex, _ -> NSCollectionLayoutSection? in
         switch sectionIndex {
         case 0:
             return self.categorySection
@@ -104,20 +91,13 @@ class HomeViewController: UIViewController {
         }
     }
 
-    private func createSectionHeader(insets: NSDirectionalEdgeInsets = .zero) -> NSCollectionLayoutBoundarySupplementaryItem {
-        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(60))
-        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
-        header.contentInsets = insets
-        return header
-    }
-
     private lazy var categorySection: NSCollectionLayoutSection = {
         let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(148), heightDimension: .absolute(82))
         let contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 15, bottom: 0, trailing: 15)
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: itemSize, subitems: [item])
         let section = NSCollectionLayoutSection(group: group)
-        section.interGroupSpacing = 14  // 設置水平間距
+        section.interGroupSpacing = 14 // 設置水平間距
         section.contentInsets = contentInsets
         section.orthogonalScrollingBehavior = .continuous // 橫向捲動
         section.boundarySupplementaryItems = [self.createSectionHeader()]
@@ -134,14 +114,14 @@ class HomeViewController: UIViewController {
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = contentInsets
-        section.interGroupSpacing = 14  // 設置垂直間距
+        section.interGroupSpacing = 14 // 設置垂直間距
         let headerContentInsets = contentInsets
         section.boundarySupplementaryItems = [self.createSectionHeader(insets: headerContentInsets)]
         return section
     }()
 
     private lazy var popularSection: NSCollectionLayoutSection = {
-        let fraction: CGFloat = 0.85
+        let fraction: CGFloat = 0.83
         let contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 15, bottom: 0, trailing: 15)
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
@@ -149,7 +129,8 @@ class HomeViewController: UIViewController {
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = contentInsets
-        section.orthogonalScrollingBehavior = .paging // 橫向捲動
+        section.interGroupSpacing = 21 // 設置垂直間距
+        section.orthogonalScrollingBehavior = .continuous // 橫向捲動
         section.boundarySupplementaryItems = [self.createSectionHeader()]
         return section
     }()
@@ -158,7 +139,7 @@ class HomeViewController: UIViewController {
         let fraction: CGFloat = 0.5
         let padding: CGFloat = 15 // group 與外部間隔
         let spacing: CGFloat = 11 // cell 間隔
-        let contentInsets = NSDirectionalEdgeInsets(top: 0, leading: padding, bottom: (padding + spacing / 2), trailing: padding)
+        let contentInsets = NSDirectionalEdgeInsets(top: 0, leading: padding, bottom: padding + spacing / 2, trailing: padding)
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(fraction), heightDimension: .fractionalHeight(1))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(fraction))
@@ -172,6 +153,13 @@ class HomeViewController: UIViewController {
         section.boundarySupplementaryItems = [self.createSectionHeader(insets: headerContentInsets)]
         return section
     }()
+
+    private func createSectionHeader(insets: NSDirectionalEdgeInsets = .zero) -> NSCollectionLayoutBoundarySupplementaryItem {
+        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(60))
+        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+        header.contentInsets = insets
+        return header
+    }
 
     // MARK: Setup
 
@@ -192,6 +180,9 @@ class HomeViewController: UIViewController {
             make.centerY.equalTo(view.safeAreaLayoutGuide).multipliedBy(0.9)
             make.width.equalToSuperview().multipliedBy(0.8)
         }
+
+        activityIndicator.center = view.center
+        view.addSubview(activityIndicator)
     }
 
     private func bindViewModel() {
@@ -212,36 +203,30 @@ class HomeViewController: UIViewController {
 
     @objc
     private func updateUI() {
-        refreshControl.endRefreshing()
+        activityIndicator.stopAnimating()
 
-        if viewModel.totalCount == 0, !viewModel.searchTerm.isEmpty {
+        if viewModel.datas.isEmpty {
             showNoResultView()
         } else {
             collectionView.reloadData()
-            showTableView()
+            showCollectionView()
         }
     }
 
-    private func showTableView() {
+    private func showCollectionView() {
         emptyStateView.isHidden = true
         collectionView.isHidden = false
     }
 
     private func showNoResultView() {
-        emptyStateView.configure(title: "沒有結果", message: "嘗試新的搜尋項目。")
+        emptyStateView.configure(title: "沒有結果", message: "請檢查連線是否異常。")
         emptyStateView.isHidden = false
         collectionView.isHidden = true
     }
 
     private func handleError(_ error: Error) {
-        refreshControl.endRefreshing()
+        activityIndicator.stopAnimating()
         showNoResultView()
-    }
-
-    @objc
-    private func reloadTracks() {
-        viewModel.state = .success
-        //        viewModel.reloadTracks()
     }
 
     private func pushToBrandVC() {
@@ -252,7 +237,7 @@ class HomeViewController: UIViewController {
 
 // MARK: UICollectionViewDelegate, UICollectionViewDataSource
 
-extension HomeViewController: CollectionViewData {
+extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return viewModel.datas.count
     }
@@ -266,7 +251,6 @@ extension HomeViewController: CollectionViewData {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-
         let section = viewModel.datas[indexPath.section]
         let item = section[indexPath.row]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: type(of: item).reuseId, for: indexPath)
@@ -275,26 +259,21 @@ extension HomeViewController: CollectionViewData {
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+
         if indexPath.section == 1 {
             pushToBrandVC()
         }
     }
 
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TitleHeaderView.reuseId, for: indexPath) as! TitleHeaderView
-
+        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TitleHeaderView.reuseId, for: indexPath) as? TitleHeaderView else {
+            return UICollectionReusableView()
+        }
         let sectionData = viewModel.sectionDatas[indexPath.section]
-//        var title = ""
-//        switch sectionData {
-//        case .category:
-//            title = "Choose a Category"
-//        case .brand: title = "Select a Brand"
-//        case .popular: title = "What’s Popular"
-//        case .latest: title = "Latest shoes"
-//        }
         header.configure(title: sectionData.title, showSeeMoreButton: indexPath.section != 0)
-        header.onSeeMoreButtonTapped = { [weak self] _ in
-            print("__+++")
+        header.onSeeMoreButtonTapped = { _ in
+            print("see more button tapped")
         }
         return header
     }

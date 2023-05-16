@@ -1,0 +1,164 @@
+{
+    "search_results" : [
+        {
+            "rating" : 4.5999999999999996,
+            "categories" : [
+                {
+                    "name" : "All Departments",
+                    "id" : "aps"
+                }
+            ],
+            "ratings_total" : 3,
+            "position" : 1,
+            "is_prime" : true,
+            "link" : "https://www.amazon.com/Under-Armour-Charged-Running-XX-Wide/dp/B09XBWVJZ9/ref=sr_1_1?keywords=shoes&qid=1684171008&sr=8-1",
+            "brand" : "Under Armour",
+            "title" : "Under Armour Men's Charged Assert 10 Running Shoe",
+            "price" : {
+                "symbol" : "$",
+                "raw" : "$75.00",
+                "asin" : "B09XBWVJZ9",
+                "link" : "https://www.amazon.com/Under-Armour-Charged-Running-XX-Wide/dp/B09XBWVJZ9/ref=sr_1_1?keywords=shoes&qid=1684171008&sr=8-1",
+                "value" : 75,
+                "currency" : "USD",
+                "name" : "$75.00"
+            },
+            "image" : "https://m.media-amazon.com/images/I/71IDl6mlHTL._AC_UL400_.jpg",
+            "prices" : [
+                {
+                    "symbol" : "$",
+                    "raw" : "$75.00",
+                    "asin" : "B09XBWVJZ9",
+                    "link" : "https://www.amazon.com/Under-Armour-Charged-Running-XX-Wide/dp/B09XBWVJZ9/ref=sr_1_1?keywords=shoes&qid=1684171008&sr=8-1",
+                    "value" : 75,
+                    "currency" : "USD",
+                    "name" : "$75.00"
+                }
+            ],
+            "asin" : "B09XBWVJZ9"
+        },
+        {
+            "rating" : 4.4000000000000004,
+            "categories" : [
+                {
+                    "name" : "All Departments",
+                    "id" : "aps"
+                }
+            ],
+            "ratings_total" : 63,
+            "position" : 2,
+            "is_prime" : true,
+            "link" : "https://www.amazon.com/New-Balance-Running-Black-Marigold/dp/B09XRGJ8J9/ref=sr_1_2?keywords=shoes&qid=1684171008&sr=8-2",
+            "brand" : "New Balance",
+            "title" : "New Balance Men's 520 V8 Running Shoe",
+            "price" : {
+                "raw" : "$50.97",
+                "value" : 50.969999999999999,
+                "symbol" : "$",
+                "currency" : "USD",
+                "name" : "$50.97",
+                "is_primary" : true
+            },
+            "image" : "https://m.media-amazon.com/images/I/516QGTJ-wwL._AC_UL400_.jpg",
+            "prices" : [
+                {
+                    "raw" : "$50.97",
+                    "value" : 50.969999999999999,
+                    "symbol" : "$",
+                    "currency" : "USD",
+                    "name" : "$50.97",
+                    "is_primary" : true
+                },
+                {
+                    "raw" : "$64.99",
+                    "value" : 64.989999999999995,
+                    "symbol" : "$",
+                    "currency" : "USD",
+                    "name" : "$50.97",
+                    "is_rrp" : true
+                }
+            ],
+            "asin" : "B09XRGJ8J9"
+        },
+        {
+            "rating" : 4.5,
+            "categories" : [
+                {
+                    "name" : "All Departments",
+                    "id" : "aps"
+                }
+            ],
+            "ratings_total" : 8,
+            "position" : 3,
+            "is_prime" : true,
+            "link" : "https://www.amazon.com/ASICS-Gel-Braid-Running-Electric-Monaco/dp/B0B47RCZ17/ref=sr_1_3?keywords=shoes&qid=1684171008&sr=8-3",
+            "brand" : "ASICS",
+            "title" : "ASICS Men's Gel-Braid Running Shoes",
+            "price" : {
+                "symbol" : "$",
+                "raw" : "$34.95",
+                "asin" : "B0B47RCZ17",
+                "link" : "https://www.amazon.com/ASICS-Gel-Braid-Running-Electric-Monaco/dp/B0B47RCZ17/ref=sr_1_3?keywords=shoes&qid=1684171008&sr=8-3",
+                "value" : 34.950000000000003,
+                "currency" : "USD",
+                "name" : "$34.95"
+            },
+            "image" : "https://m.media-amazon.com/images/I/617ih63IczL._AC_UL400_.jpg",
+            "prices" : [
+                {
+                    "symbol" : "$",
+                    "raw" : "$34.95",
+                    "asin" : "B0B47RCZ17",
+                    "link" : "https://www.amazon.com/ASICS-Gel-Braid-Running-Electric-Monaco/dp/B0B47RCZ17/ref=sr_1_3?keywords=shoes&qid=1684171008&sr=8-3",
+                    "value" : 34.950000000000003,
+                    "currency" : "USD",
+                    "name" : "$34.95"
+                }
+            ],
+            "asin" : "B0B47RCZ17"
+        },
+        {
+            "rating" : 4.2999999999999998,
+            "categories" : [
+                {
+                    "name" : "All Departments",
+                    "id" : "aps"
+                }
+            ],
+            "ratings_total" : 672,
+            "position" : 4,
+            "is_prime" : true,
+            "link" : "https://www.amazon.com/Nike-Revolution-Running-Shoes-White-White/dp/B09NMJPRZ9/ref=sr_1_4?keywords=shoes&qid=1684171008&sr=8-4",
+            "brand" : "Nike",
+            "title" : "Nike Revolution 6 Nn Mens",
+            "price" : {
+                "raw" : "$68.17",
+                "value" : 68.170000000000002,
+                "symbol" : "$",
+                "currency" : "USD",
+                "name" : "$68.17",
+                "is_primary" : true
+            },
+            "image" : "https://m.media-amazon.com/images/I/51RZOAVJDZL._AC_UL400_.jpg",
+            "prices" : [
+                {
+                    "raw" : "$68.17",
+                    "value" : 68.170000000000002,
+                    "symbol" : "$",
+                    "currency" : "USD",
+                    "name" : "$68.17",
+                    "is_primary" : true
+                },
+                {
+                    "raw" : "$94.40",
+                    "value" : 94.400000000000006,
+                    "symbol" : "$",
+                    "currency" : "USD",
+                    "name" : "$68.17",
+                    "is_rrp" : true
+                }
+            ],
+            "asin" : "B09NMJPRZ9"
+        }
+    ]
+}

@@ -9,6 +9,7 @@ import UIKit
 
 enum Constants {
 
+    static let apiKey = "9D02D6CF9F2A43FC89D79DB23C9F515F"
 //    static let itunesDomain = "https://itunes.apple.com"
 
     /// 一般請求Timeout

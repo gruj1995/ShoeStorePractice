@@ -1,11 +1,12 @@
 //
-//  UIView+Extensions.swift
+//  UtilityExtensions.swift
 //  ShoeStorePractice
 //
-//  Created by 李品毅 on 2023/5/13.
+//  Created by 李品毅 on 2023/5/15.
 //
 
 import UIKit
+import Kingfisher
 
 extension UIView {
     func getYGGradientLayer() -> CAGradientLayer {
@@ -17,5 +18,11 @@ extension UIView {
         gradient.locations = [0.1139, 1.3853]
         gradient.frame = bounds
         return gradient
+    }
+}
+
+extension UIImageView {
+    func loadImage(with url: URL?, placeholder: UIImage? = nil) {
+        kf.setImage(with: url, placeholder: placeholder)
     }
 }

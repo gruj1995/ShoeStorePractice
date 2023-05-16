@@ -27,8 +27,10 @@ class ShoeCategoryCell: UICollectionViewCell, ConfigurableCell {
         return String(describing: self)
     }
 
-    func configure(data category: String) {
-        categoryLabel.text = category
+    func configure(data model: ShoeCategory) {
+        categoryLabel.text = model.title
+        categoryLabel.textColor = model.isSelected ? .appColor(.white) : .appColor(.black)
+        categoryLabel.backgroundColor = model.isSelected ? .appColor(.darkGray2) : .appColor(.white)
     }
 
     // MARK: Private
@@ -56,10 +58,10 @@ class ShoeCategoryCell: UICollectionViewCell, ConfigurableCell {
         }
     }
 
-    override var isSelected: Bool {
-        didSet {
-            categoryLabel.textColor = isSelected ? .appColor(.white) : .appColor(.black)
-            categoryLabel.backgroundColor = isSelected ? .appColor(.darkGray2) : .appColor(.white)
-        }
-    }
+//    override var isSelected: Bool {
+//        didSet {
+//            categoryLabel.textColor = isSelected ? .appColor(.white) : .appColor(.black)
+//            categoryLabel.backgroundColor = isSelected ? .appColor(.darkGray2) : .appColor(.white)
+//        }
+//    }
 }

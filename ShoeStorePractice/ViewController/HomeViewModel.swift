@@ -1,8 +1,8 @@
 //
-//  BrandViewModel.swift
+//  HomeViewModel.swift
 //  ShoeStorePractice
 //
-//  Created by 李品毅 on 2023/5/15.
+//  Created by 李品毅 on 2023/5/13.
 //
 
 import Combine
@@ -10,46 +10,51 @@ import Foundation
 
 // MARK: CollectionCellConfigurator
 
-typealias BrandInfoCellConfig = CollectionCellConfigurator<BrandInfoCell, String>
-typealias ShoeCategoryCellConfig = CollectionCellConfigurator<ShoeCategoryCell, ShoeCategory>
+typealias CategoryCellConfig = CollectionCellConfigurator<CategoryCell, Category>
+typealias BrandCellConfig = CollectionCellConfigurator<BrandCell, Brand>
+typealias PopularCellConfig = CollectionCellConfigurator<PopularCell, ShoeInfo>
+typealias LatestCellConfig = CollectionCellConfigurator<LatestCell, LatestShoeInfo>
 
-// MARK: - BrandViewModel
+// MARK: - HomeViewModel
 
-class BrandViewModel {
+class HomeViewModel {
     // MARK: Lifecycle
 
     init() {
+        brands = Brand.allCases.map { BrandCellConfig(item: $0) }
         fetchData()
     }
 
     // MARK: Internal
 
-    enum SectionData: Int, CaseIterable {
+    enum SectionData: CaseIterable {
+        case category
         case brand
-        case shoeCategories
-        case shoeCategory
+        case popular
         case latest
+
+        // MARK: Internal
+
+        var title: String {
+            switch self {
+            case .category: return "Choose a Category"
+            case .brand: return "Select a Brand"
+            case .popular: return "What’s Popular"
+            case .latest: return "Latest shoes"
+            }
+        }
     }
 
     private(set) var sectionDatas: [SectionData] = SectionData.allCases
     private(set) var datas = [[CellConfigurator]]()
-    private(set) var brand: [CellConfigurator] = []
-    private(set) var shoeCategoryItems: [CellConfigurator] = []
+    private(set) var categories: [CellConfigurator] = []
+    private(set) var brands: [CellConfigurator] = []
+    private(set) var popularItems: [CellConfigurator] = []
     private(set) var latestItems: [CellConfigurator] = []
 
     @Published var state: ViewState = .none
 
-    var selectedShoeCategory: ShoeCategory? {
-        guard let config = shoeCategories[selectedCategoryIndex] as? ShoeCategoryCellConfig else {
-            return nil
-        }
-        return config.item
-    }
-
-    func setSelectedShoeCategory(forCellAt indexPath: IndexPath) {
-        selectedCategoryIndex = indexPath.row
-        updateShoeCategories()
-    }
+    // MARK: Private
 
     func fetchData() {
         state = .loading
@@ -57,12 +62,12 @@ class BrandViewModel {
         let group = DispatchGroup()
 
         group.enter()
-        fetchMockShoeCategories { _ in
+        fetchCategories { _ in
             group.leave()
         }
 
         group.enter()
-        fetchMockShoeCategories() { result in
+        fetchBestSellers() { result in
             group.leave()
         }
 
@@ -72,7 +77,7 @@ class BrandViewModel {
         }
 
 //        group.enter()
-//        fetchMockShoeCategoryItems { _ in
+//        fetchMockBestSellers { _ in
 //            group.leave()
 //        }
 //
@@ -82,64 +87,42 @@ class BrandViewModel {
 //        }
 
         group.notify(queue: .main) {
-            self.brand = [BrandInfoCellConfig(item: "w")]
             self.setData()
             self.state = .success
         }
     }
 
-    func item(forCellAt indexPath: IndexPath) -> CellConfigurator? {
-        let section = datas[indexPath.section]
-        let item = section[indexPath.row]
-        return item
-    }
-
-    // MARK: Private
-
-    private var shoeCategories: [CellConfigurator] = []
-    private var selectedCategoryIndex: Int = 0
-
     private func setData() {
-        datas.append(brand)
-        datas.append(shoeCategories)
-        datas.append(shoeCategoryItems)
+        datas.append(categories)
+        datas.append(brands)
+        datas.append(popularItems)
         datas.append(latestItems)
     }
 
-    func sectionTitle(_ section: Int) -> String {
-        let sectionData = SectionData(rawValue: section)
-        if sectionData == .shoeCategory {
-            return selectedShoeCategory?.title ?? ""
-        } else if sectionData == .latest {
-            return "Latest shoes"
+    private func fetchCategories(_ completion: @escaping ((Error?) -> Void)) {
+        APIManager.shared.fetchCategories { [weak self] result in
+            guard let self else {
+                completion(NetworkError.inputDataNilOrZeroLength)
+                return
+            }
+            switch result {
+            case .success(let response):
+                guard let categories = response.categories else {
+                    completion(NetworkError.invalidEmptyResponse(type: "categories are empty"))
+                    return
+                }
+                self.categories = categories.compactMap {
+                    let category = Category(data: $0)
+                    return CategoryCellConfig(item: category)
+                }
+                completion(nil)
+            case .failure(let error):
+                completion(error)
+            }
         }
-        return ""
     }
 
-    private func updateShoeCategories() {
-        guard let configs = shoeCategories as? [ShoeCategoryCellConfig] else { return }
-        var newConfigs: [ShoeCategoryCellConfig] = []
-
-        for (index, config) in configs.enumerated() {
-            let isSelected = (index == selectedCategoryIndex)
-            let newConfig = ShoeCategoryCellConfig(item: ShoeCategory(title: config.item.title, isSelected: isSelected))
-            newConfigs.append(newConfig)
-        }
-
-        datas[1] = newConfigs
-    }
-
-    private func fetchMockShoeCategories(_ completion: @escaping ((Error?) -> Void)) {
-        shoeCategories = [
-            ShoeCategoryCellConfig(item: ShoeCategory(title: "Running", isSelected: true)),
-            ShoeCategoryCellConfig(item: ShoeCategory(title: "Casuals")),
-            ShoeCategoryCellConfig(item: ShoeCategory(title: "Walking")),
-            ShoeCategoryCellConfig(item: ShoeCategory(title: "Athletic"))
-        ]
-        completion(nil)
-    }
-
-    private func fetchShoeCategoryItems(_ completion: @escaping ((Error?) -> Void)) {
+    private func fetchBestSellers(_ completion: @escaping ((Error?) -> Void)) {
         APIManager.shared.fetchBestSellers { [weak self] result in
             guard let self else {
                 completion(NetworkError.inputDataNilOrZeroLength)
@@ -152,7 +135,7 @@ class BrandViewModel {
                     return
                 }
                 let prefixResults = searchResults.prefix(5)
-                self.shoeCategoryItems = prefixResults.compactMap {
+                self.popularItems = prefixResults.compactMap {
                     let shoeInfo = ShoeInfo(data: $0)
                     return PopularCellConfig(item: shoeInfo)
                 }
@@ -190,7 +173,7 @@ class BrandViewModel {
 
 // MARK: 假資料
 
-extension BrandViewModel {
+extension HomeViewModel {
     enum MockResponseType {
         case popular
         case newst
@@ -223,10 +206,10 @@ extension BrandViewModel {
         }
     }
 
-    private func fetchMockShoeCategoryItems(_ completion: @escaping ((Error?) -> Void)) {
+    private func fetchMockBestSellers(_ completion: @escaping ((Error?) -> Void)) {
         let response: ShoesResponse? = mockResponse(.popular)
         guard let searchResults = response?.searchResults else { return }
-        shoeCategoryItems = searchResults.compactMap {
+        popularItems = searchResults.compactMap {
             let shoeInfo = ShoeInfo(data: $0)
             return PopularCellConfig(item: shoeInfo)
         }
@@ -242,11 +225,4 @@ extension BrandViewModel {
         }
         completion(nil)
     }
-}
-
-// MARK: - ShoeCategory
-
-struct ShoeCategory: Equatable {
-    var title: String
-    var isSelected: Bool = false
 }
