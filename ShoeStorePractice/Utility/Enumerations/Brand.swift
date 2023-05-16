@@ -14,5 +14,21 @@ enum Brand: String, CaseIterable {
     case crocs
     case skechers
     case reebok
-    case adidas1
+
+    var title: String {
+        switch self {
+        case .adidas:
+            return "Adidas"
+        case .puma:
+            return "Puma"
+        case .nike:
+            return "Nike"
+        case .crocs:
+            return "Crocs"
+        case .skechers:
+            return "Skechers"
+        case .reebok:
+            return "Reebok"
+        }
+    }
 }

@@ -232,6 +232,7 @@ class HomeViewController: UIViewController {
 
     private func pushToBrandVC() {
         let vc = BrandViewController()
+        vc.dataSource = self
         navigationController?.pushViewController(vc, animated: true)
     }
 }
@@ -267,6 +268,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         case .category, .popular:
             collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
         case .brand:
+            viewModel.setSelectBrand(forCellAt: indexPath.item)
             pushToBrandVC()
         default:
             return
@@ -286,5 +288,11 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             print("see more button tapped")
         }
         return header
+    }
+}
+
+extension HomeViewController: BrandViewControllerDataSource {
+    func brand(_ vc: BrandViewController) -> Brand? {
+        viewModel.selectedBrand
     }
 }

@@ -32,7 +32,7 @@ class LatestCell: UICollectionViewCell, ConfigurableCell {
     func configure(data model: LatestShoeInfo) {
         categoryImageView.loadImage(
             with: model.imageUrl,
-            placeholder: AppImages.shoesSmall
+            placeholder: UIImage()
         )
         isLike = model.isLike
     }

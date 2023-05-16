@@ -9,6 +9,10 @@ import Combine
 import SnapKit
 import UIKit
 
+protocol BrandViewControllerDataSource: AnyObject {
+    func brand(_ vc: BrandViewController) -> Brand?
+}
+
 // MARK: - BrandViewController
 
 class BrandViewController: UIViewController {
@@ -25,9 +29,11 @@ class BrandViewController: UIViewController {
 
     // MARK: Internal
 
+    weak var dataSource: BrandViewControllerDataSource?
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel = BrandViewModel()
+        viewModel = BrandViewModel(brand: dataSource?.brand(self))
         setupUI()
         bindViewModel()
     }
