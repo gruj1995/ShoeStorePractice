@@ -33,10 +33,9 @@ class BrandInfoCell: UICollectionViewCell, ConfigurableCell {
         cartButtonGradientLayer.frame = cartButton.bounds
     }
 
-    func configure(data brand: String) {
+    func configure(data brand: Brand?) {
         categoryImageView.image = AppImages.shoesBig
-        nameLabel.text = "Adidas"
-        descriptionLabel.text = "test"
+        brandLabel.text = brand?.title ?? ""
     }
 
     // MARK: Private
@@ -57,25 +56,17 @@ class BrandInfoCell: UICollectionViewCell, ConfigurableCell {
     }()
 
     private lazy var infoStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [nameLabel, descriptionLabel, cartButton])
+        let stackView = UIStackView(arrangedSubviews: [brandLabel, cartButton])
         stackView.axis = .vertical
         stackView.spacing = 9
         stackView.alignment = .center
         return stackView
     }()
 
-    private lazy var nameLabel: UILabel = {
+    private lazy var brandLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
         label.font = .systemFont(ofSize: 24, weight: .semibold)
-        label.textColor = .darkGray
-        return label
-    }()
-
-    private lazy var descriptionLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .left
-        label.font = .systemFont(ofSize: 19, weight: .medium)
         label.textColor = .appColor(.white)
         return label
     }()

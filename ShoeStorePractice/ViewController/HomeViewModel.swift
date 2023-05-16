@@ -21,7 +21,6 @@ class HomeViewModel {
     // MARK: Lifecycle
 
     init() {
-        brands = Brand.allCases.map { BrandCellConfig(item: $0) }
         fetchData()
     }
 
@@ -46,12 +45,18 @@ class HomeViewModel {
     }
 
     private(set) var datas = [[CellConfigurator]]()
-    private(set) var categories: [CellConfigurator] = []
-    private(set) var brands: [CellConfigurator] = []
-    private(set) var popularItems: [CellConfigurator] = []
-    private(set) var latestItems: [CellConfigurator] = []
+    private(set) var categoryConfigs: [CellConfigurator] = []
+    private(set) var brandConfigs: [CellConfigurator] = []
+    private(set) var popularConfigs: [CellConfigurator] = []
+    private(set) var latestConfigs: [CellConfigurator] = []
+    private(set) var selectedBrand: Brand?
 
     @Published var state: ViewState = .none
+
+    func setSelectBrand(forCellAt index: Int) {
+        guard index < 6 else { return }
+        selectedBrand = Brand.allCases[index]
+    }
 
     func sectionType(_ section: Int) -> SectionType? {
         guard sectionTypes.indices.contains(section) else {
@@ -70,25 +75,29 @@ class HomeViewModel {
             group.leave()
         }
 
-        group.enter()
-        fetchBestSellers() { result in
-            group.leave()
-        }
+        brandConfigs = Brand.allCases.map { BrandCellConfig(item: $0) }
 
-        group.enter()
-        fetchNewestArrivals() { result in
-            group.leave()
-        }
+        if Constants.isDebug {
+            group.enter()
+            fetchMockBestSellers { _ in
+                group.leave()
+            }
 
-//        group.enter()
-//        fetchMockBestSellers { _ in
-//            group.leave()
-//        }
-//
-//        group.enter()
-//        fetchMockNewestArrivals { _ in
-//            group.leave()
-//        }
+            group.enter()
+            fetchMockNewestArrivals { _ in
+                group.leave()
+            }
+        } else {
+            group.enter()
+            fetchBestSellers() { result in
+                group.leave()
+            }
+
+            group.enter()
+            fetchNewestArrivals() { result in
+                group.leave()
+            }
+        }
 
         group.notify(queue: .main) {
             self.setData()
@@ -101,10 +110,10 @@ class HomeViewModel {
     private var sectionTypes: [SectionType] = SectionType.allCases
 
     private func setData() {
-        datas.append(categories)
-        datas.append(brands)
-        datas.append(popularItems)
-        datas.append(latestItems)
+        datas.append(categoryConfigs)
+        datas.append(brandConfigs)
+        datas.append(popularConfigs)
+        datas.append(latestConfigs)
     }
 
     private func fetchCategories(_ completion: @escaping ((Error?) -> Void)) {
@@ -119,7 +128,7 @@ class HomeViewModel {
                     completion(NetworkError.invalidEmptyResponse(type: "categories are empty"))
                     return
                 }
-                self.categories = categories.compactMap {
+                self.categoryConfigs = categories.compactMap {
                     let category = Category(data: $0)
                     return CategoryCellConfig(item: category)
                 }
@@ -143,7 +152,7 @@ class HomeViewModel {
                     return
                 }
                 let prefixResults = searchResults.prefix(5)
-                self.popularItems = prefixResults.compactMap {
+                self.popularConfigs = prefixResults.compactMap {
                     let shoeInfo = ShoeInfo(data: $0)
                     return PopularCellConfig(item: shoeInfo)
                 }
@@ -167,7 +176,7 @@ class HomeViewModel {
                     return
                 }
                 let prefixResults = searchResults.prefix(6)
-                self.latestItems = prefixResults.compactMap {
+                self.latestConfigs = prefixResults.compactMap {
                     let shoeInfo = LatestShoeInfo(data: $0, isLike: false)
                     return LatestCellConfig(item: shoeInfo)
                 }
@@ -217,7 +226,7 @@ extension HomeViewModel {
     private func fetchMockBestSellers(_ completion: @escaping ((Error?) -> Void)) {
         let response: ShoesResponse? = mockResponse(.popular)
         guard let searchResults = response?.searchResults else { return }
-        popularItems = searchResults.compactMap {
+        popularConfigs = searchResults.compactMap {
             let shoeInfo = ShoeInfo(data: $0)
             return PopularCellConfig(item: shoeInfo)
         }
@@ -227,7 +236,7 @@ extension HomeViewModel {
     private func fetchMockNewestArrivals(_ completion: @escaping ((Error?) -> Void)) {
         let response: ShoesResponse? = mockResponse(.newst)
         guard let searchResults = response?.searchResults else { return }
-        latestItems = searchResults.compactMap {
+        latestConfigs = searchResults.compactMap {
             let shoeInfo = LatestShoeInfo(data: $0, isLike: false)
             return LatestCellConfig(item: shoeInfo)
         }

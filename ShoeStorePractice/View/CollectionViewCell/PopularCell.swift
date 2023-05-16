@@ -28,11 +28,11 @@ class PopularCell: UICollectionViewCell, ConfigurableCell {
     }
 
     func configure(data model: ShoeInfo) {
-//        categoryImageView.image = AppImages.shoesBig
         categoryImageView.loadImage(
             with: model.imageUrl,
             placeholder: AppImages.shoesBig
         )
+//        categoryImageView.image = categoryImageView.image?.removeBackground()
         nameLabel.text = model.brand
         descriptionLabel.text = model.description
         amountLabel.text = model.amountString

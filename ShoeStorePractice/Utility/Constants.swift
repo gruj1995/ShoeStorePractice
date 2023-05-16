@@ -9,8 +9,8 @@ import UIKit
 
 enum Constants {
 
+    // Rainforest Api key
     static let apiKey = "9D02D6CF9F2A43FC89D79DB23C9F515F"
-//    static let itunesDomain = "https://itunes.apple.com"
 
     /// 一般請求Timeout
     static let timeoutIntervalForRequest = TimeInterval(30)
@@ -25,4 +25,6 @@ enum Constants {
     static let screenHeight = Constants.screenSize.height
 
     static let tabBarHeight: CGFloat = screenHeight / 9
+
+    static let isDebug: Bool = false
 }

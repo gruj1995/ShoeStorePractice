@@ -10,7 +10,7 @@ import Foundation
 
 // MARK: CollectionCellConfigurator
 
-typealias BrandInfoCellConfig = CollectionCellConfigurator<BrandInfoCell, String>
+typealias BrandInfoCellConfig = CollectionCellConfigurator<BrandInfoCell, Brand?>
 typealias ShoeCategoryCellConfig = CollectionCellConfigurator<ShoeCategoryCell, ShoeCategory>
 
 // MARK: - BrandViewModel
@@ -18,7 +18,8 @@ typealias ShoeCategoryCellConfig = CollectionCellConfigurator<ShoeCategoryCell, 
 class BrandViewModel {
     // MARK: Lifecycle
 
-    init() {
+    init(brand: Brand?) {
+        self.brand = brand
         fetchData()
     }
 
@@ -32,9 +33,10 @@ class BrandViewModel {
     }
 
     private(set) var datas = [[CellConfigurator]]()
-    private(set) var brand: [CellConfigurator] = []
-    private(set) var shoeCategoryItems: [CellConfigurator] = []
-    private(set) var latestItems: [CellConfigurator] = []
+    private(set) var brandConfig: [CellConfigurator] = []
+    private(set) var shoeCategoryConfigs: [CellConfigurator] = []
+    private(set) var latestConfigs: [CellConfigurator] = []
+    private(set) var brand: Brand?
 
     @Published var state: ViewState = .none
 
@@ -55,32 +57,34 @@ class BrandViewModel {
         datas.removeAll()
         let group = DispatchGroup()
 
-        brand = [BrandInfoCellConfig(item: "w")]
+        brandConfig = [BrandInfoCellConfig(item: brand)]
 
         group.enter()
         fetchMockShoeCategories() { result in
             group.leave()
         }
 
-        group.enter()
-        fetchShoeCategoryItems() { result in
-            group.leave()
-        }
+        if Constants.isDebug {
+            group.enter()
+            fetchMockShoeCategoryItems { _ in
+                group.leave()
+            }
 
-        group.enter()
-        fetchNewestArrivals() { result in
-            group.leave()
-        }
+            group.enter()
+            fetchMockNewestArrivals { _ in
+                group.leave()
+            }
+        } else {
+            group.enter()
+            fetchShoeCategoryItems() { result in
+                group.leave()
+            }
 
-//        group.enter()
-//        fetchMockShoeCategoryItems { _ in
-//            group.leave()
-//        }
-//
-//        group.enter()
-//        fetchMockNewestArrivals { _ in
-//            group.leave()
-//        }
+            group.enter()
+            fetchNewestArrivals() { result in
+                group.leave()
+            }
+        }
 
         group.notify(queue: .main) {
             self.setData()
@@ -118,10 +122,10 @@ class BrandViewModel {
     private var selectedCategoryIndex: Int = 0
 
     private func setData() {
-        datas.append(brand)
+        datas.append(brandConfig)
         datas.append(shoeCategories)
-        datas.append(shoeCategoryItems)
-        datas.append(latestItems)
+        datas.append(shoeCategoryConfigs)
+        datas.append(latestConfigs)
     }
 
     private func updateShoeCategories() {
@@ -148,7 +152,7 @@ class BrandViewModel {
     }
 
     private func fetchShoeCategoryItems(_ completion: @escaping ((Error?) -> Void)) {
-        APIManager.shared.fetchBestSellers { [weak self] result in
+        APIManager.shared.fetchBestSellers(brand: brand) { [weak self] result in
             guard let self else {
                 completion(NetworkError.inputDataNilOrZeroLength)
                 return
@@ -160,7 +164,7 @@ class BrandViewModel {
                     return
                 }
                 let prefixResults = searchResults.prefix(5)
-                self.shoeCategoryItems = prefixResults.compactMap {
+                self.shoeCategoryConfigs = prefixResults.compactMap {
                     let shoeInfo = ShoeInfo(data: $0)
                     return PopularCellConfig(item: shoeInfo)
                 }
@@ -172,7 +176,7 @@ class BrandViewModel {
     }
 
     private func fetchNewestArrivals(_ completion: @escaping ((Error?) -> Void)) {
-        APIManager.shared.fetchNewestArrivals { [weak self] result in
+        APIManager.shared.fetchNewestArrivals(brand: brand)  { [weak self] result in
             guard let self else {
                 completion(NetworkError.inputDataNilOrZeroLength)
                 return
@@ -184,7 +188,7 @@ class BrandViewModel {
                     return
                 }
                 let prefixResults = searchResults.prefix(6)
-                self.latestItems = prefixResults.compactMap {
+                self.latestConfigs = prefixResults.compactMap {
                     let shoeInfo = LatestShoeInfo(data: $0, isLike: false)
                     return LatestCellConfig(item: shoeInfo)
                 }
@@ -234,7 +238,7 @@ extension BrandViewModel {
     private func fetchMockShoeCategoryItems(_ completion: @escaping ((Error?) -> Void)) {
         let response: ShoesResponse? = mockResponse(.popular)
         guard let searchResults = response?.searchResults else { return }
-        shoeCategoryItems = searchResults.compactMap {
+        shoeCategoryConfigs = searchResults.compactMap {
             let shoeInfo = ShoeInfo(data: $0)
             return PopularCellConfig(item: shoeInfo)
         }
@@ -244,7 +248,7 @@ extension BrandViewModel {
     private func fetchMockNewestArrivals(_ completion: @escaping ((Error?) -> Void)) {
         let response: ShoesResponse? = mockResponse(.newst)
         guard let searchResults = response?.searchResults else { return }
-        latestItems = searchResults.compactMap {
+        latestConfigs = searchResults.compactMap {
             let shoeInfo = LatestShoeInfo(data: $0, isLike: false)
             return LatestCellConfig(item: shoeInfo)
         }

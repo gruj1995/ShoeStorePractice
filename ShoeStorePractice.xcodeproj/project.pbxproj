@@ -48,6 +48,7 @@
 		8BCD64902A12A0B000E1D834 /* MockNewstShoes.json in Resources */ = {isa = PBXBuildFile; fileRef = 8BCD648F2A12A0B000E1D834 /* MockNewstShoes.json */; };
 		8BCD64922A12A5C600E1D834 /* Brand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BCD64912A12A5C600E1D834 /* Brand.swift */; };
 		8BCD64942A12A64300E1D834 /* LatestShoeInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BCD64932A12A64300E1D834 /* LatestShoeInfo.swift */; };
+		8BCD649A2A133A4800E1D834 /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BCD64992A133A4800E1D834 /* UIImage+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -109,6 +110,7 @@
 		8BCD648F2A12A0B000E1D834 /* MockNewstShoes.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = MockNewstShoes.json; sourceTree = "<group>"; };
 		8BCD64912A12A5C600E1D834 /* Brand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Brand.swift; sourceTree = "<group>"; };
 		8BCD64932A12A64300E1D834 /* LatestShoeInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatestShoeInfo.swift; sourceTree = "<group>"; };
+		8BCD64992A133A4800E1D834 /* UIImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -201,6 +203,7 @@
 			children = (
 				8B3EF3E02A12062C00A87D85 /* UtilityExtensions.swift */,
 				8B3EF39C2A0F1E6F00A87D85 /* UIColor+Extensions.swift */,
+				8BCD64992A133A4800E1D834 /* UIImage+Extensions.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -467,6 +470,7 @@
 				8B3EF35F2A0F0F2C00A87D85 /* AppDelegate.swift in Sources */,
 				8B3EF3CA2A113B5A00A87D85 /* TitleHeaderView.swift in Sources */,
 				8B3EF3D62A11DF8600A87D85 /* BrandInfoCell.swift in Sources */,
+				8BCD649A2A133A4800E1D834 /* UIImage+Extensions.swift in Sources */,
 				8B3EF3C42A10869600A87D85 /* CellConfigurator.swift in Sources */,
 				8B3EF38F2A0F1B9C00A87D85 /* MainTabBarController.swift in Sources */,
 				8B3EF3BE2A0F96F300A87D85 /* DynamicHeightFlowLayout.swift in Sources */,

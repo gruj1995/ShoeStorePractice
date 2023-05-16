@@ -74,13 +74,17 @@ class APIManager {
     }
 
     /// 取得最受歡迎的鞋款
-    func fetchBestSellers(_ completion: @escaping ((Result<ShoesResponse, Error>) -> Void)) {
+    func fetchBestSellers(brand: Brand? = nil, _ completion: @escaping ((Result<ShoesResponse, Error>) -> Void)) {
         var urlComponents = URLComponents(string: APIEndpoint.request)
+        var searchTerm = "shoes"
+        if let brand {
+            searchTerm += brand.title
+        }
         urlComponents?.queryItems = [
             URLQueryItem(name: "api_key", value: Constants.apiKey),
             URLQueryItem(name: "type", value: "search"),
             URLQueryItem(name: "amazon_domain", value: "amazon.com"),
-            URLQueryItem(name: "search_term", value: "shoes"),
+            URLQueryItem(name: "search_term", value: searchTerm),
             URLQueryItem(name: "category_id", value: "bestsellers_fashion"),
             URLQueryItem(name: "page", value: "1"),
             URLQueryItem(name: "max_page", value: "1")
@@ -94,13 +98,17 @@ class APIManager {
     }
 
     /// 取得最新上架的鞋款
-    func fetchNewestArrivals(_ completion: @escaping ((Result<ShoesResponse, Error>) -> Void)) {
+    func fetchNewestArrivals(brand: Brand? = nil, _ completion: @escaping ((Result<ShoesResponse, Error>) -> Void)) {
         var urlComponents = URLComponents(string: APIEndpoint.request)
+        var searchTerm = "shoes"
+        if let brand {
+            searchTerm += brand.title
+        }
         urlComponents?.queryItems = [
             URLQueryItem(name: "api_key", value: Constants.apiKey),
             URLQueryItem(name: "type", value: "search"),
             URLQueryItem(name: "amazon_domain", value: "amazon.com"),
-            URLQueryItem(name: "search_term", value: "shoes"),
+            URLQueryItem(name: "search_term", value: searchTerm),
             URLQueryItem(name: "page", value: "1"),
             URLQueryItem(name: "sort_by", value: "most_recent")
         ]
