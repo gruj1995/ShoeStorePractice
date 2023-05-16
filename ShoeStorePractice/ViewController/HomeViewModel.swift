@@ -70,25 +70,25 @@ class HomeViewModel {
             group.leave()
         }
 
+        group.enter()
+        fetchBestSellers() { result in
+            group.leave()
+        }
+
+        group.enter()
+        fetchNewestArrivals() { result in
+            group.leave()
+        }
+
 //        group.enter()
-//        fetchBestSellers() { result in
+//        fetchMockBestSellers { _ in
 //            group.leave()
 //        }
 //
 //        group.enter()
-//        fetchNewestArrivals() { result in
+//        fetchMockNewestArrivals { _ in
 //            group.leave()
 //        }
-
-        group.enter()
-        fetchMockBestSellers { _ in
-            group.leave()
-        }
-
-        group.enter()
-        fetchMockNewestArrivals { _ in
-            group.leave()
-        }
 
         group.notify(queue: .main) {
             self.setData()
