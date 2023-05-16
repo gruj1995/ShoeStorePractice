@@ -27,7 +27,7 @@ class HomeViewModel {
 
     // MARK: Internal
 
-    enum SectionData: CaseIterable {
+    enum SectionType: CaseIterable {
         case category
         case brand
         case popular
@@ -45,7 +45,6 @@ class HomeViewModel {
         }
     }
 
-    private(set) var sectionDatas: [SectionData] = SectionData.allCases
     private(set) var datas = [[CellConfigurator]]()
     private(set) var categories: [CellConfigurator] = []
     private(set) var brands: [CellConfigurator] = []
@@ -54,7 +53,12 @@ class HomeViewModel {
 
     @Published var state: ViewState = .none
 
-    // MARK: Private
+    func sectionType(_ section: Int) -> SectionType? {
+        guard sectionTypes.indices.contains(section) else {
+            return nil
+        }
+        return sectionTypes[section]
+    }
 
     func fetchData() {
         state = .loading
@@ -66,31 +70,35 @@ class HomeViewModel {
             group.leave()
         }
 
-        group.enter()
-        fetchBestSellers() { result in
-            group.leave()
-        }
-
-        group.enter()
-        fetchNewestArrivals() { result in
-            group.leave()
-        }
-
 //        group.enter()
-//        fetchMockBestSellers { _ in
+//        fetchBestSellers() { result in
 //            group.leave()
 //        }
 //
 //        group.enter()
-//        fetchMockNewestArrivals { _ in
+//        fetchNewestArrivals() { result in
 //            group.leave()
 //        }
+
+        group.enter()
+        fetchMockBestSellers { _ in
+            group.leave()
+        }
+
+        group.enter()
+        fetchMockNewestArrivals { _ in
+            group.leave()
+        }
 
         group.notify(queue: .main) {
             self.setData()
             self.state = .success
         }
     }
+
+    // MARK: Private
+
+    private var sectionTypes: [SectionType] = SectionType.allCases
 
     private func setData() {
         datas.append(categories)

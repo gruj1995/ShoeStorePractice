@@ -61,6 +61,7 @@ class LatestCell: UICollectionViewCell, ConfigurableCell {
 
     private lazy var likeButton: UIButton = {
         let button = UIButton()
+        button.touchEdgeInsets = UIEdgeInsets(top: -10, left: -10, bottom: -10, right: -10)
         button.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -88,6 +89,7 @@ class LatestCell: UICollectionViewCell, ConfigurableCell {
         }
     }
 
+    // TODO: 待修改
     @objc
     private func likeButtonTapped(_ sender: UIButton) {
         isLike.toggle()

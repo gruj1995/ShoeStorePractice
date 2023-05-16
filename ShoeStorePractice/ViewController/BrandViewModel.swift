@@ -24,14 +24,13 @@ class BrandViewModel {
 
     // MARK: Internal
 
-    enum SectionData: Int, CaseIterable {
+    enum SectionType: Int, CaseIterable {
         case brand
         case shoeCategories
         case shoeCategory
         case latest
     }
 
-    private(set) var sectionDatas: [SectionData] = SectionData.allCases
     private(set) var datas = [[CellConfigurator]]()
     private(set) var brand: [CellConfigurator] = []
     private(set) var shoeCategoryItems: [CellConfigurator] = []
@@ -56,33 +55,34 @@ class BrandViewModel {
         datas.removeAll()
         let group = DispatchGroup()
 
-        group.enter()
-        fetchMockShoeCategories { _ in
-            group.leave()
-        }
+        brand = [BrandInfoCellConfig(item: "w")]
 
         group.enter()
         fetchMockShoeCategories() { result in
             group.leave()
         }
 
-        group.enter()
-        fetchNewestArrivals() { result in
-            group.leave()
-        }
-
 //        group.enter()
-//        fetchMockShoeCategoryItems { _ in
+//        fetchShoeCategoryItems() { result in
 //            group.leave()
 //        }
 //
 //        group.enter()
-//        fetchMockNewestArrivals { _ in
+//        fetchNewestArrivals() { result in
 //            group.leave()
 //        }
 
+        group.enter()
+        fetchMockShoeCategoryItems { _ in
+            group.leave()
+        }
+
+        group.enter()
+        fetchMockNewestArrivals { _ in
+            group.leave()
+        }
+
         group.notify(queue: .main) {
-            self.brand = [BrandInfoCellConfig(item: "w")]
             self.setData()
             self.state = .success
         }
@@ -94,8 +94,26 @@ class BrandViewModel {
         return item
     }
 
+    func sectionType(_ section: Int) -> SectionType? {
+        guard sectionTypes.indices.contains(section) else {
+            return nil
+        }
+        return sectionTypes[section]
+    }
+
+    func sectionTitle(_ section: Int) -> String {
+        let sectionType = SectionType(rawValue: section)
+        if sectionType == .shoeCategory {
+            return selectedShoeCategory?.title ?? ""
+        } else if sectionType == .latest {
+            return "Latest shoes"
+        }
+        return ""
+    }
+
     // MARK: Private
 
+    private var sectionTypes: [SectionType] = SectionType.allCases
     private var shoeCategories: [CellConfigurator] = []
     private var selectedCategoryIndex: Int = 0
 
@@ -104,16 +122,6 @@ class BrandViewModel {
         datas.append(shoeCategories)
         datas.append(shoeCategoryItems)
         datas.append(latestItems)
-    }
-
-    func sectionTitle(_ section: Int) -> String {
-        let sectionData = SectionData(rawValue: section)
-        if sectionData == .shoeCategory {
-            return selectedShoeCategory?.title ?? ""
-        } else if sectionData == .latest {
-            return "Latest shoes"
-        }
-        return ""
     }
 
     private func updateShoeCategories() {

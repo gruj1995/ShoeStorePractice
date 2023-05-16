@@ -5,8 +5,8 @@
 //  Created by 李品毅 on 2023/5/15.
 //
 
-import UIKit
 import Kingfisher
+import UIKit
 
 extension UIView {
     func getYGGradientLayer() -> CAGradientLayer {
@@ -24,5 +24,31 @@ extension UIView {
 extension UIImageView {
     func loadImage(with url: URL?, placeholder: UIImage? = nil) {
         kf.setImage(with: url, placeholder: placeholder)
+    }
+}
+
+// MARK: 擴張按鈕點擊範圍
+
+extension UIButton {
+    private enum AssociatedKeys {
+        static var touchEdgeInsets = "touchEdgeInsets"
+    }
+
+    var touchEdgeInsets: UIEdgeInsets? {
+        get {
+            return objc_getAssociatedObject(self, &AssociatedKeys.touchEdgeInsets) as? UIEdgeInsets
+        }
+        set {
+            objc_setAssociatedObject(self, &AssociatedKeys.touchEdgeInsets, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+
+    override open func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+        guard let touchEdgeInsets = touchEdgeInsets else {
+            return super.point(inside: point, with: event)
+        }
+
+        let expandedBounds = bounds.inset(by: touchEdgeInsets)
+        return expandedBounds.contains(point)
     }
 }

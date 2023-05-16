@@ -98,8 +98,7 @@ class BrandViewController: UIViewController {
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: itemSize, subitems: [item])
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = contentInsets
-        section.orthogonalScrollingBehavior = .none // 橫向捲動
-//        section.boundarySupplementaryItems = [self.createSectionHeader()]
+        section.orthogonalScrollingBehavior = .none // 不捲動
         return section
     }()
 
@@ -111,8 +110,7 @@ class BrandViewController: UIViewController {
         let section = NSCollectionLayoutSection(group: group)
         section.interGroupSpacing = 15 // 設置水平間距
         section.contentInsets = contentInsets
-        section.orthogonalScrollingBehavior = .continuous // 橫向捲動
-//        section.boundarySupplementaryItems = [self.createSectionHeader(headerHeight: 35)]
+        section.orthogonalScrollingBehavior = .continuous
         return section
     }()
 
@@ -126,7 +124,7 @@ class BrandViewController: UIViewController {
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = contentInsets
         section.interGroupSpacing = 21 // 設置垂直間距
-        section.orthogonalScrollingBehavior = .continuous // 橫向捲動
+        section.orthogonalScrollingBehavior = .continuous
         section.boundarySupplementaryItems = [self.createSectionHeader()]
         return section
     }()
@@ -141,11 +139,11 @@ class BrandViewController: UIViewController {
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(fraction))
         // 每個group包含2個item
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 2) //
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 2)
         group.interItemSpacing = .fixed(spacing)
         group.contentInsets = contentInsets
         let section = NSCollectionLayoutSection(group: group)
-        section.orthogonalScrollingBehavior = .groupPaging // 橫向捲動
+        section.orthogonalScrollingBehavior = .groupPaging
         let headerContentInsets = NSDirectionalEdgeInsets(top: 0, leading: padding, bottom: 0, trailing: padding)
         section.boundarySupplementaryItems = [self.createSectionHeader(insets: headerContentInsets)]
         return section
@@ -248,11 +246,19 @@ extension BrandViewController: UICollectionViewDelegate, UICollectionViewDataSou
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
-
-        if indexPath.section == 1 {
-            viewModel.setSelectedShoeCategory(forCellAt: indexPath)
-            collectionView.reloadData()
+        guard let sectionType = viewModel.sectionType(indexPath.section) else {
+            return
+        }
+        switch sectionType {
+        case .shoeCategories, .shoeCategory:
+            collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+            // 選擇鞋種
+            if sectionType == .shoeCategories {
+                viewModel.setSelectedShoeCategory(forCellAt: indexPath)
+                collectionView.reloadData()
+            }
+        default:
+            return
         }
     }
 
@@ -261,7 +267,7 @@ extension BrandViewController: UICollectionViewDelegate, UICollectionViewDataSou
             return UICollectionReusableView()
         }
         let title = viewModel.sectionTitle(indexPath.section)
-        header.configure(title: title, showSeeMoreButton: indexPath.section != 0)
+        header.configure(title: title, showSeeMoreButton: true)
         header.onSeeMoreButtonTapped = { _ in
             print("see more button tapped")
         }
