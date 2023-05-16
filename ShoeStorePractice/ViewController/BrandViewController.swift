@@ -261,7 +261,7 @@ extension BrandViewController: UICollectionViewDelegate, UICollectionViewDataSou
             return UICollectionReusableView()
         }
         let title = viewModel.sectionTitle(indexPath.section)
-        header.configure(title: title, showSeeMoreButton: indexPath.section != 0)
+        header.configure(title: title, showSeeMoreButton: true)
         header.onSeeMoreButtonTapped = { _ in
             print("see more button tapped")
         }

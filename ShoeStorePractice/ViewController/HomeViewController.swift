@@ -77,14 +77,15 @@ class HomeViewController: UIViewController {
     // MARK: CollectionLayout
 
     private lazy var layout: UICollectionViewCompositionalLayout = UICollectionViewCompositionalLayout { sectionIndex, _ -> NSCollectionLayoutSection? in
-        switch sectionIndex {
-        case 0:
+        let sectionType = self.viewModel.sectionType(sectionIndex)
+        switch sectionType {
+        case .category:
             return self.categorySection
-        case 1:
+        case .brand:
             return self.brandSection
-        case 2:
+        case .popular:
             return self.popularSection
-        case 3:
+        case .latest:
             return self.latestSection
         default:
             return nil
@@ -261,7 +262,10 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
 
-        if indexPath.section == 1 {
+        guard let sectionType = viewModel.sectionType(indexPath.section) else {
+            return
+        }
+        if sectionType == .brand{
             pushToBrandVC()
         }
     }
@@ -270,8 +274,11 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TitleHeaderView.reuseId, for: indexPath) as? TitleHeaderView else {
             return UICollectionReusableView()
         }
-        let sectionData = viewModel.sectionDatas[indexPath.section]
-        header.configure(title: sectionData.title, showSeeMoreButton: indexPath.section != 0)
+        guard let sectionType = viewModel.sectionType(indexPath.section) else {
+            return header
+        }
+        let showSeeMoreButton = sectionType != .category
+        header.configure(title: sectionType.title, showSeeMoreButton: showSeeMoreButton)
         header.onSeeMoreButtonTapped = { _ in
             print("see more button tapped")
         }
